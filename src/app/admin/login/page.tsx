@@ -5,18 +5,26 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import Image from "next/image";
 import { Eye, EyeOff, Shield, Lock, Activity } from "lucide-react";
+import ConfirmModal from "@/components/admin/ConfirmModal";
 
 export default function AdminLoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    if (!form.email || !form.password) return;
     setError("");
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmedSignIn = async () => {
+    setConfirmOpen(false);
+    setLoading(true);
     try {
       const credential = await signInWithEmailAndPassword(auth, form.email, form.password);
       const idToken = await credential.user.getIdToken();
@@ -207,6 +215,18 @@ export default function AdminLoginPage() {
           </div>
         </div>
       </div>
+
+      {/* Sign-in confirmation modal */}
+      <ConfirmModal
+        open={confirmOpen}
+        title="Confirm Sign In"
+        description={`You are signing in as:`}
+        detail={form.email}
+        confirmLabel="Yes, Sign In"
+        cancelLabel="Cancel"
+        onConfirm={handleConfirmedSignIn}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </div>
   );
 }

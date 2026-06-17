@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Edit2, Trash2, Eye, EyeOff } from "lucide-react";
+import ConfirmModal from "@/components/admin/ConfirmModal";
 
 type Post = {
   id: string; title: string; excerpt: string; category: string;
@@ -11,6 +12,8 @@ type Post = {
 export default function AdminBlogPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; id: string | null; title: string }>({ open: false, id: null, title: "" });
+  const [deleting, setDeleting] = useState(false);
 
   const load = () => {
     fetch("/api/admin/blog").then(r => r.json()).then(data => { setPosts(data); setLoading(false); });
@@ -27,14 +30,17 @@ export default function AdminBlogPage() {
     setPosts(prev => prev.map(p => p.id === post.id ? { ...p, published: !p.published } : p));
   };
 
-  const remove = async (id: string) => {
-    if (!confirm("Delete this post?")) return;
+  const confirmDelete = async () => {
+    if (!deleteConfirm.id) return;
+    setDeleting(true);
     await fetch("/api/admin/blog", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id: deleteConfirm.id }),
     });
-    setPosts(prev => prev.filter(p => p.id !== id));
+    setPosts(prev => prev.filter(p => p.id !== deleteConfirm.id));
+    setDeleting(false);
+    setDeleteConfirm({ open: false, id: null, title: "" });
   };
 
   return (
@@ -109,7 +115,7 @@ export default function AdminBlogPage() {
                           {post.published ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
                           {post.published ? "Unpublish" : "Publish"}
                         </button>
-                        <button onClick={() => remove(post.id)}
+                        <button onClick={() => setDeleteConfirm({ open: true, id: post.id, title: post.title })}
                           className="flex items-center gap-1 text-xs text-red-400 hover:underline">
                           <Trash2 className="w-3 h-3" /> Delete
                         </button>
@@ -122,6 +128,20 @@ export default function AdminBlogPage() {
           </div>
         )}
       </div>
+
+      {/* Delete confirmation */}
+      <ConfirmModal
+        open={deleteConfirm.open}
+        title="Delete Blog Post"
+        description="This post will be permanently removed and unpublished from the website. This cannot be undone."
+        detail={deleteConfirm.title}
+        confirmLabel="Delete Post"
+        cancelLabel="Keep It"
+        danger
+        loading={deleting}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteConfirm({ open: false, id: null, title: "" })}
+      />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -9,6 +10,7 @@ import {
   HeadphonesIcon, Package2, ShoppingCart, Mail, Bell, Tag, Settings,
   LogOut, ChevronRight, Gem, BookOpen, BarChart3, X,
 } from "lucide-react";
+import ConfirmModal from "./ConfirmModal";
 
 const nav = [
   {
@@ -68,8 +70,11 @@ type Props = { mobileOpen?: boolean; onClose?: () => void };
 export default function AdminSidebar({ mobileOpen, onClose }: Props) {
   const pathname = usePathname();
   const router = useRouter();
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
 
-  const handleSignOut = async () => {
+  const doSignOut = async () => {
+    setSigningOut(true);
     await signOut(auth).catch(() => {});
     await fetch("/api/admin/auth/logout", { method: "POST" });
     router.push("/admin/login");
@@ -152,7 +157,7 @@ export default function AdminSidebar({ mobileOpen, onClose }: Props) {
           </div>
         </div>
         <button
-          onClick={handleSignOut}
+          onClick={() => setConfirmSignOut(true)}
           className="flex items-center gap-3 w-full px-3 py-2 rounded-xl text-sm text-gray-500 hover:text-red-400 hover:bg-red-400/8 transition-all"
         >
           <LogOut className="w-4 h-4" strokeWidth={1.75} />
@@ -160,6 +165,19 @@ export default function AdminSidebar({ mobileOpen, onClose }: Props) {
         </button>
       </div>
     </aside>
+
+      {/* Sign-out confirmation */}
+      <ConfirmModal
+        open={confirmSignOut}
+        title="Sign Out"
+        description="Are you sure you want to sign out of the Rider Africa Admin Console?"
+        confirmLabel="Sign Out"
+        cancelLabel="Stay Signed In"
+        danger
+        loading={signingOut}
+        onConfirm={doSignOut}
+        onCancel={() => setConfirmSignOut(false)}
+      />
     </>
   );
 }

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminModal from "@/components/admin/AdminModal";
+import ConfirmModal from "@/components/admin/ConfirmModal";
 import { Trash2, Reply, Mail } from "lucide-react";
 
 type Enquiry = {
@@ -13,9 +14,11 @@ export default function AdminEnquiriesPage() {
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [viewModal, setViewModal] = useState<{ open: boolean; item: Enquiry | null }>({ open: false, item: null });
   const [replyModal, setReplyModal] = useState<{ open: boolean; item: Enquiry | null }>({ open: false, item: null });
+  const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; id: string | null; name: string }>({ open: false, id: null, name: "" });
   const [replyBody, setReplyBody] = useState("");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const load = () => {
@@ -23,14 +26,22 @@ export default function AdminEnquiriesPage() {
   };
   useEffect(() => { load(); }, []);
 
-  const deleteEnquiry = async (id: string) => {
-    if (!confirm("Delete this enquiry?")) return;
+  const promptDelete = (id: string, name: string) => {
+    setDeleteConfirm({ open: true, id, name });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirm.id) return;
+    setDeleting(true);
     await fetch("/api/admin/enquiries", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id: deleteConfirm.id }),
     });
-    setEnquiries(prev => prev.filter(e => e.id !== id));
+    setEnquiries(prev => prev.filter(e => e.id !== deleteConfirm.id));
+    setDeleting(false);
+    setDeleteConfirm({ open: false, id: null, name: "" });
+    setViewModal({ open: false, item: null });
   };
 
   const openReply = (item: Enquiry) => {
@@ -108,7 +119,7 @@ export default function AdminEnquiriesPage() {
                           className="flex items-center gap-1 text-xs text-emerald-400 hover:underline">
                           <Reply className="w-3 h-3" /> Reply
                         </button>
-                        <button onClick={() => deleteEnquiry(e.id)}
+                        <button onClick={() => promptDelete(e.id, e.name)}
                           className="flex items-center gap-1 text-xs text-red-400 hover:underline">
                           <Trash2 className="w-3 h-3" /> Delete
                         </button>
@@ -141,7 +152,7 @@ export default function AdminEnquiriesPage() {
                 className="flex-1 flex items-center justify-center gap-2 bg-[#0073FF] hover:bg-[#0055CC] text-white font-bold py-2.5 rounded-xl text-sm transition-colors">
                 <Reply className="w-4 h-4" /> Reply
               </button>
-              <button onClick={() => { deleteEnquiry(viewModal.item!.id); setViewModal({ open: false, item: null }); }}
+              <button onClick={() => promptDelete(viewModal.item!.id, viewModal.item!.name)}
                 className="px-4 py-2.5 border border-red-500/20 text-red-400 hover:bg-red-500/10 rounded-xl text-sm transition-all">
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -180,6 +191,20 @@ export default function AdminEnquiriesPage() {
           </div>
         )}
       </AdminModal>
+
+      {/* Delete confirmation */}
+      <ConfirmModal
+        open={deleteConfirm.open}
+        title="Delete Enquiry"
+        description="This will permanently remove the enquiry from the system. This action cannot be undone."
+        detail={`From: ${deleteConfirm.name}`}
+        confirmLabel="Delete"
+        cancelLabel="Keep It"
+        danger
+        loading={deleting}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteConfirm({ open: false, id: null, name: "" })}
+      />
     </div>
   );
 }

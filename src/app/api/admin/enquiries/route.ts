@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, doc, deleteDoc } from "firebase/firestore";
 import nodemailer from "nodemailer";
+import { emailTemplate } from "@/lib/email-template";
 
 export async function GET() {
   try {
@@ -50,24 +51,28 @@ export async function POST(req: NextRequest) {
     auth: { user: smtpUser, pass: smtpPass },
   });
 
+  const htmlBody = `
+    <p>Dear ${name},</p>
+    <div style="line-height:1.8;white-space:pre-wrap;">${body.replace(/\n/g, "<br>")}</div>
+    <p style="margin-top:24px;color:#6B7280;font-size:13px;">
+      Kind regards,<br/>
+      <strong style="color:#0A0F2E;">Rider Africa Team</strong><br/>
+      +264 81 469 8594 · admin@riderafrica.com
+    </p>
+  `;
+
   await transporter.sendMail({
     from: `"Rider Africa" <${smtpUser}>`,
     to,
     replyTo: "admin@riderafrica.com",
     subject: `Re: ${subject}`,
-    html: `
-      <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-        <div style="background:#0073FF;padding:20px 28px;border-radius:12px 12px 0 0">
-          <h2 style="color:#fff;margin:0;font-size:18px">Rider Africa</h2>
-        </div>
-        <div style="background:#fff;padding:28px;border-radius:0 0 12px 12px;border:1px solid #e5e7eb;border-top:none">
-          <p style="color:#333;font-size:15px;line-height:1.6">Dear ${name},</p>
-          <div style="color:#333;font-size:14px;line-height:1.8;white-space:pre-wrap">${body}</div>
-          <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0">
-          <p style="color:#666;font-size:12px;margin:0">Rider Africa · Windhoek, Namibia · admin@riderafrica.com</p>
-        </div>
-      </div>
-    `,
+    html: emailTemplate({
+      title: `Re: ${subject}`,
+      preheader: `Reply from Rider Africa regarding your enquiry`,
+      body: htmlBody,
+      ctaLabel: "Visit Our Website",
+      ctaHref: "https://riderafrica.com",
+    }),
   });
 
   return Response.json({ success: true });
