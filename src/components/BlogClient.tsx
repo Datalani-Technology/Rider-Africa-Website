@@ -1,10 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import Link from "next/link";
-import { Rocket, Users, TrendingUp, Globe, BarChart3, Shield } from "lucide-react";
+import { Rocket, Users, TrendingUp, Globe, BarChart3, Shield, FileText } from "lucide-react";
 
-const posts = [
+const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string; strokeWidth?: number }>> = {
+  "Company News": Rocket, "Driver Stories": Users, "Industry": TrendingUp,
+  "Product Update": Globe, "Community": BarChart3, "Safety": Shield,
+};
+
+const staticPosts = [
   {
     date: "June 2026",
     category: "Company News",
@@ -61,14 +66,37 @@ const posts = [
   },
 ];
 
-const categories = ["All", "Company News", "Driver Stories", "Product Update", "Industry", "Community", "Safety"];
+const categories = ["All", "Company News", "Driver Stories", "Product Update", "Industry", "Community", "Safety", "Announcement"];
+
+type FirestorePost = { id: string; title: string; excerpt: string; category: string; author: string; createdAt: string };
 
 export default function BlogClient() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [firestorePosts, setFirestorePosts] = useState<FirestorePost[]>([]);
+  const [loadedFirestore, setLoadedFirestore] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/blog").then(r => r.json()).then((data: FirestorePost[]) => {
+      setFirestorePosts(data);
+      setLoadedFirestore(true);
+    }).catch(() => setLoadedFirestore(true));
+  }, []);
+
+  // Use Firestore posts if any exist, otherwise fall back to static posts
+  const allPosts = loadedFirestore && firestorePosts.length > 0
+    ? firestorePosts.map(p => ({
+        date: new Date(p.createdAt).toLocaleDateString("en-NA", { month: "long", year: "numeric" }),
+        category: p.category,
+        title: p.title,
+        excerpt: p.excerpt,
+        readTime: "3 min read",
+        Icon: CATEGORY_ICONS[p.category] ?? FileText,
+      }))
+    : staticPosts;
 
   const filtered = activeCategory === "All"
-    ? posts
-    : posts.filter((p) => p.category === activeCategory);
+    ? allPosts
+    : allPosts.filter((p) => p.category === activeCategory);
 
   const featured = filtered[0];
   const rest = filtered.slice(1);
@@ -171,28 +199,43 @@ export default function BlogClient() {
 
         {/* Newsletter CTA */}
         <AnimateOnScroll className="mt-16 text-center">
-          <div className="bg-white border border-[#0073FF]/15 rounded-3xl p-10 max-w-2xl mx-auto shadow-sm">
-            <h3 className="text-2xl font-black text-gray-900 mb-2">Stay Updated</h3>
-            <p className="text-gray-500 mb-6">
-              Get Rider Africa news, product updates, and driver insights direct to your inbox.
-            </p>
-            <form className="flex gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="your@email.com"
-                className="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0073FF] focus:ring-2 focus:ring-[#0073FF]/10 transition-all"
-              />
-              <button
-                type="submit"
-                className="bg-[#0073FF] hover:bg-[#0055CC] text-white font-semibold px-5 py-3 rounded-xl transition-colors shrink-0"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
+          <BlogNewsletter />
         </AnimateOnScroll>
 
       </div>
     </section>
+  );
+}
+
+function BlogNewsletter() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle"|"loading"|"done"|"error">("idle");
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      await fetch("/api/subscribe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
+      setStatus("done");
+      setEmail("");
+    } catch { setStatus("error"); }
+  };
+  return (
+    <div className="bg-white border border-[#0073FF]/15 rounded-3xl p-10 max-w-2xl mx-auto shadow-sm">
+      <h3 className="text-2xl font-black text-gray-900 mb-2">Stay Updated</h3>
+      <p className="text-gray-500 mb-6">Get Rider Africa news, product updates, and driver insights direct to your inbox.</p>
+      {status === "done" ? (
+        <p className="text-[#0073FF] font-semibold">You&apos;re subscribed!</p>
+      ) : (
+        <form className="flex gap-3 max-w-md mx-auto" onSubmit={submit}>
+          <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            className="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0073FF] focus:ring-2 focus:ring-[#0073FF]/10 transition-all" />
+          <button type="submit" disabled={status === "loading"}
+            className="bg-[#0073FF] hover:bg-[#0055CC] disabled:opacity-60 text-white font-semibold px-5 py-3 rounded-xl transition-colors shrink-0">
+            {status === "loading" ? "…" : "Subscribe"}
+          </button>
+        </form>
+      )}
+    </div>
   );
 }

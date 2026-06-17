@@ -19,6 +19,8 @@ const labels: Record<string, string> = {
   "/admin/notifications": "Notifications",
   "/admin/pricing": "Pricing",
   "/admin/settings": "Settings",
+  "/admin/blog": "Blog & News",
+  "/admin/blog/new": "New Blog Post",
 };
 
 export default function AdminTopBar() {

@@ -1,12 +1,13 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import {
   LayoutDashboard, Users, Car, FileText, Route, CreditCard, Wallet,
   HeadphonesIcon, Package2, ShoppingCart, Mail, Bell, Tag, Settings,
-  LogOut, ChevronRight, Gem,
+  LogOut, ChevronRight, Gem, BookOpen,
 } from "lucide-react";
 
 const nav = [
@@ -44,6 +45,7 @@ const nav = [
       { href: "/admin/subscribers", label: "Subscribers", Icon: Mail },
       { href: "/admin/enquiries", label: "Enquiries", Icon: Package2 },
       { href: "/admin/notifications", label: "Notifications", Icon: Bell },
+      { href: "/admin/blog", label: "Blog & News", Icon: BookOpen },
     ],
   },
   {
@@ -70,10 +72,7 @@ export default function AdminSidebar() {
       {/* Logo */}
       <div className="px-5 py-5 border-b border-white/5">
         <Link href="/admin" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-black text-sm shrink-0"
-            style={{ background: "linear-gradient(135deg, #0073FF, #00C3FF)" }}>
-            R
-          </div>
+          <Image src="/logo.png" alt="Rider Africa" width={32} height={32} className="rounded-lg shrink-0" />
           <div className="min-w-0">
             <p className="text-white font-black text-sm leading-none">Rider Africa</p>
             <p className="text-[#0073FF] text-[10px] font-semibold uppercase tracking-widest mt-0.5">Admin Console</p>
