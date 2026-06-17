@@ -11,15 +11,17 @@ async function count(col: string) {
 }
 
 export async function GET() {
-  const [enquiries, subscribers, driverApplications] = await Promise.all([
+  const [users, drivers, enquiries, subscribers, driverApplications] = await Promise.all([
+    count("users"),
+    count("drivers"),
     count("enquiries"),
     count("subscribers"),
     count("driver-applications"),
   ]);
 
   return Response.json({
-    totalUsers: 0,
-    totalDrivers: 0,
+    totalUsers: users,
+    totalDrivers: drivers,
     tripsToday: 0,
     pendingPayments: 0,
     withdrawalRequests: 0,
