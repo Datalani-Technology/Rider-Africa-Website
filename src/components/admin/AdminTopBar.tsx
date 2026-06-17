@@ -47,7 +47,7 @@ export default function AdminTopBar({ onMenuToggle, theme = "dark", onThemeToggl
   const today = new Date().toLocaleDateString("en-NA", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
 
   return (
-    <header className="h-16 bg-[#070C18]/80 backdrop-blur-sm border-b border-white/5 flex items-center px-4 lg:px-6 shrink-0 gap-3 lg:gap-4">
+    <header className="adm-topbar h-16 bg-[#070C18]/80 backdrop-blur-sm border-b border-white/5 flex items-center px-4 lg:px-6 shrink-0 gap-3 lg:gap-4">
 
       {/* Hamburger — mobile only */}
       <button onClick={onMenuToggle} className="lg:hidden w-9 h-9 flex items-center justify-center text-gray-400 hover:text-white transition-colors shrink-0">

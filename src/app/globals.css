@@ -141,14 +141,23 @@ body {
   --adm-row-hover: rgba(0,0,0,0.02);
 }
 
-/* Light mode content overrides */
-.admin-light .bg-\[#070C18\]    { background-color: #FFFFFF !important; }
-.admin-light .bg-\[#070C18\]\/80 { background-color: rgba(255,255,255,0.92) !important; }
-.admin-light .bg-\[#0D1526\]    { background-color: #FFFFFF !important; }
-.admin-light .bg-\[#0A0F1E\]    { background-color: #EEF2FF !important; }
-.admin-light .bg-\[#0A0F2E\]    { background-color: #1E2A5E !important; }
-.admin-light .bg-\[#131C30\]    { background-color: #F3F4F6 !important; }
-.admin-light .bg-\[#0D1526\]\/80 { background-color: rgba(255,255,255,0.9) !important; backdrop-filter: blur(12px); }
+/* Light mode: semantic component backgrounds (no special chars needed) */
+.admin-light .adm-page    { background-color: #EEF2FF !important; }
+.admin-light .adm-sidebar { background-color: #FFFFFF !important; border-color: rgba(0,0,0,0.08) !important; }
+.admin-light .adm-topbar  { background-color: rgba(255,255,255,0.92) !important; border-color: rgba(0,0,0,0.08) !important; }
+.admin-light .adm-card    { background-color: #FFFFFF !important; border-color: rgba(0,0,0,0.08) !important; }
+.admin-light .adm-input   { background-color: #F3F4F6 !important; border-color: rgba(0,0,0,0.10) !important; color: #0A0F2E !important; }
+
+/* Light mode: text colours */
+.admin-light .text-white    { color: #0A0F2E !important; }
+.admin-light .text-gray-200 { color: #1F2937 !important; }
+.admin-light .text-gray-300 { color: #374151 !important; }
+.admin-light .text-gray-400 { color: #4B5563 !important; }
+.admin-light .text-gray-500 { color: #6B7280 !important; }
+.admin-light .text-gray-600 { color: #9CA3AF !important; }
+.admin-light .text-gray-700 { color: #C0C8D8 !important; }
+
+/* Light mode: borders and subtle backgrounds using Tailwind opacity suffixes */
 .admin-light .border-white\/4  { border-color: rgba(0,0,0,0.06) !important; }
 .admin-light .border-white\/5  { border-color: rgba(0,0,0,0.07) !important; }
 .admin-light .border-white\/6  { border-color: rgba(0,0,0,0.08) !important; }
@@ -156,27 +165,13 @@ body {
 .admin-light .border-white\/10 { border-color: rgba(0,0,0,0.12) !important; }
 .admin-light .border-white\/15 { border-color: rgba(0,0,0,0.15) !important; }
 .admin-light .border-white\/20 { border-color: rgba(0,0,0,0.18) !important; }
-.admin-light .bg-white\/2  { background-color: rgba(0,0,0,0.02) !important; }
-.admin-light .bg-white\/3  { background-color: rgba(0,0,0,0.025) !important; }
-.admin-light .bg-white\/4  { background-color: rgba(0,0,0,0.04) !important; }
-.admin-light .bg-white\/5  { background-color: rgba(0,0,0,0.05) !important; }
-.admin-light .bg-white\/8  { background-color: rgba(0,0,0,0.06) !important; }
-.admin-light .text-white   { color: #0A0F2E !important; }
-.admin-light .text-gray-200 { color: #1F2937 !important; }
-.admin-light .text-gray-300 { color: #374151 !important; }
-.admin-light .text-gray-400 { color: #4B5563 !important; }
-.admin-light .text-gray-500 { color: #6B7280 !important; }
-.admin-light .text-gray-600 { color: #9CA3AF !important; }
-.admin-light .text-gray-700 { color: #C0C8D8 !important; }
-.admin-light .hover\:bg-white\/2:hover { background-color: rgba(0,0,0,0.02) !important; }
-.admin-light .hover\:bg-white\/4:hover { background-color: rgba(0,0,0,0.04) !important; }
-.admin-light .hover\:bg-white\/8:hover { background-color: rgba(0,0,0,0.06) !important; }
-.admin-light .hover\:bg-white\/10:hover { background-color: rgba(0,0,0,0.08) !important; }
-.admin-light .hover\:border-white\/10:hover { border-color: rgba(0,0,0,0.12) !important; }
-.admin-light .hover\:border-white\/15:hover { border-color: rgba(0,0,0,0.15) !important; }
-.admin-light .hover\:border-white\/20:hover { border-color: rgba(0,0,0,0.18) !important; }
-.admin-light .placeholder-gray-700::placeholder { color: #9CA3AF !important; }
-.admin-light .placeholder-gray-600::placeholder { color: #9CA3AF !important; }
+.admin-light .bg-white\/2 { background-color: rgba(0,0,0,0.02) !important; }
+.admin-light .bg-white\/3 { background-color: rgba(0,0,0,0.025) !important; }
+.admin-light .bg-white\/4 { background-color: rgba(0,0,0,0.04) !important; }
+.admin-light .bg-white\/5 { background-color: rgba(0,0,0,0.05) !important; }
+.admin-light .bg-white\/8 { background-color: rgba(0,0,0,0.06) !important; }
+
+/* Light mode: inputs */
 .admin-light input, .admin-light textarea, .admin-light select { color: #0A0F2E !important; }
 
 /* ── Scrollbar ──────────────────────────────────── */

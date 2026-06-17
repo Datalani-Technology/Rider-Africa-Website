@@ -68,7 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className={`min-h-screen flex bg-[#0A0F1E] ${theme === "light" ? "admin-light" : ""}`}>
+    <div className={`adm-page min-h-screen flex bg-[#0A0F1E] ${theme === "light" ? "admin-light" : ""}`}>
       <AdminSidebar mobileOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex-1 flex flex-col min-w-0 lg:ml-0">

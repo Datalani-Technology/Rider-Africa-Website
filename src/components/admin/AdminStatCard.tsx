@@ -15,7 +15,7 @@ export default function AdminStatCard({
 }: Props) {
   if (loading) {
     return (
-      <div className="relative bg-[#0D1526] border border-white/5 rounded-2xl p-6 overflow-hidden animate-pulse">
+      <div className="adm-card relative bg-[#0D1526] border border-white/5 rounded-2xl p-6 overflow-hidden animate-pulse">
         <div className="h-3 w-24 bg-white/5 rounded mb-4" />
         <div className="h-8 w-16 bg-white/5 rounded mb-2" />
         <div className="h-2 w-20 bg-white/5 rounded" />
@@ -27,7 +27,7 @@ export default function AdminStatCard({
   const trendColor = trend === undefined || trend === 0 ? "text-gray-500" : trend > 0 ? "text-emerald-400" : "text-red-400";
 
   return (
-    <div className="group relative bg-[#0D1526] border border-white/5 rounded-2xl p-6 overflow-hidden transition-all duration-300 hover:border-white/10 hover:shadow-xl"
+    <div className="adm-card group relative bg-[#0D1526] border border-white/5 rounded-2xl p-6 overflow-hidden transition-all duration-300 hover:border-white/10 hover:shadow-xl"
       style={{ boxShadow: "0 0 0 0 transparent" }}
       onMouseEnter={e => (e.currentTarget.style.boxShadow = `0 0 40px ${color}18`)}
       onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 0 0 transparent")}
