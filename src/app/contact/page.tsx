@@ -98,7 +98,7 @@ export default function ContactPage() {
             <h2 className="text-3xl font-black text-gray-900 mb-8">Our Details</h2>
             <div className="space-y-6">
               {contactItems.map((item) => (
-                <div key={item.label} className="flex items-start gap-4">
+                <div key={item.value} className="flex items-start gap-4">
                   <div className="w-11 h-11 bg-[#0073FF]/10 rounded-xl flex items-center justify-center shrink-0 mt-0.5">
                     <item.Icon className="w-5 h-5 text-[#0073FF]" strokeWidth={1.75} />
                   </div>
