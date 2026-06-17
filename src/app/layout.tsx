@@ -101,7 +101,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "@id": "https://riderafrica.com",
-              name: "Rider Africa",
+              name: "Rider Africa Logistics (Proprietary) Limited",
+              legalName: "Rider Africa Logistics (Proprietary) Limited",
+              identifier: "20250760",
               description:
                 "Namibia's leading on-demand delivery and transport platform. Same-day parcel delivery, passenger transport, grocery delivery across Windhoek and Namibia.",
               url: "https://riderafrica.com",
@@ -111,8 +113,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               email: "admin@riderafrica.com",
               address: {
                 "@type": "PostalAddress",
-                addressLocality: "Windhoek",
-                addressRegion: "Khomas",
+                streetAddress: "695 Vrede Rede, Mondesa",
+                addressLocality: "Swakopmund",
+                addressRegion: "Erongo",
+                postalCode: "22000",
                 addressCountry: "NA",
               },
               geo: {

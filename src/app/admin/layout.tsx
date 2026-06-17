@@ -6,8 +6,8 @@ import { auth } from "@/lib/firebase";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminTopBar from "@/components/admin/AdminTopBar";
 
-const TIMEOUT_MS = 30 * 60 * 1000;  // 30 minutes
-const WARN_MS   = 25 * 60 * 1000;   // warn at 25 minutes
+const TIMEOUT_MS = 30 * 60 * 1000;
+const WARN_MS    = 25 * 60 * 1000;
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,7 +15,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const warnRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [showWarn, setShowWarn] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const isLogin = pathname === "/admin/login";
+
+  // Close sidebar on route change
+  useEffect(() => { setSidebarOpen(false); }, [pathname]);
 
   const doLogout = useCallback(async () => {
     await signOut(auth).catch(() => {});
@@ -49,32 +53,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0F1E] flex" style={{ fontFamily: "inherit" }}>
-      <AdminSidebar />
-      <div className="flex-1 flex flex-col min-w-0">
-        <AdminTopBar />
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+    <div className="min-h-screen bg-[#0A0F1E] flex">
+      <AdminSidebar mobileOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      <div className="flex-1 flex flex-col min-w-0 lg:ml-0">
+        <AdminTopBar onMenuToggle={() => setSidebarOpen(v => !v)} />
+        <main className="flex-1 overflow-auto p-4 lg:p-6">{children}</main>
       </div>
 
+      {/* Session expiry warning */}
       {showWarn && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#0D1526] border border-amber-500/30 rounded-2xl p-8 max-w-sm w-full mx-4 text-center shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-[#0D1526] border border-amber-500/30 rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl">
             <div className="w-12 h-12 bg-amber-500/10 border border-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-amber-400 text-xl">⏱</span>
             </div>
             <h3 className="text-white font-bold text-lg mb-2">Session Expiring</h3>
-            <p className="text-gray-400 text-sm mb-6">
-              You will be signed out in 5 minutes due to inactivity.
-            </p>
+            <p className="text-gray-400 text-sm mb-6">You will be signed out in 5 minutes due to inactivity.</p>
             <div className="flex gap-3">
-              <button onClick={doLogout}
-                className="flex-1 border border-white/10 text-gray-400 hover:text-white py-2.5 rounded-xl text-sm transition-colors">
-                Sign Out Now
-              </button>
-              <button onClick={resetTimers}
-                className="flex-1 bg-[#0073FF] hover:bg-[#0055CC] text-white font-bold py-2.5 rounded-xl text-sm transition-colors">
-                Stay Signed In
-              </button>
+              <button onClick={doLogout} className="flex-1 border border-white/10 text-gray-400 hover:text-white py-2.5 rounded-xl text-sm transition-colors">Sign Out Now</button>
+              <button onClick={resetTimers} className="flex-1 bg-[#0073FF] hover:bg-[#0055CC] text-white font-bold py-2.5 rounded-xl text-sm transition-colors">Stay Signed In</button>
             </div>
           </div>
         </div>

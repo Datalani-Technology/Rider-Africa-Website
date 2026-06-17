@@ -124,7 +124,7 @@ export default function Footer() {
               <p><a href="mailto:admin@riderafrica.com" className="hover:text-[#4DA6FF] transition-colors">✉️ admin@riderafrica.com</a></p>
               <p><a href="mailto:customercare@riderafrica.com" className="hover:text-[#4DA6FF] transition-colors">✉️ customercare@riderafrica.com</a></p>
               <p><a href="mailto:registration@riderafrica.com" className="hover:text-[#4DA6FF] transition-colors">✉️ registration@riderafrica.com</a></p>
-              <p>📍 Windhoek, Namibia</p>
+              <p>📍 695 Vrede Rede, Mondesa, Swakopmund</p>
             </div>
 
             {/* Social icons */}
@@ -246,9 +246,12 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[#0073FF]/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs">
-          <p>&copy; {new Date().getFullYear()} Rider Africa. All rights reserved.</p>
+          <div>
+            <p>&copy; {new Date().getFullYear()} Rider Africa Logistics (Pty) Ltd. All rights reserved.</p>
+            <p className="text-gray-700 mt-0.5">Reg. No. 20250760 · Registered in Namibia 🇳🇦 under the Companies Act 2004</p>
+          </div>
           <div className="flex items-center gap-4">
-            <p>Registered in Namibia 🇳🇦</p>
+            <p className="hidden sm:block">BIPA Reg. 20250760</p>
             <div className="flex gap-3">
               {socialLinks.map((s) => (
                 <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"

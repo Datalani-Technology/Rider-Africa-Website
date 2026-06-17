@@ -7,7 +7,7 @@ import { auth } from "@/lib/firebase";
 import {
   LayoutDashboard, Users, Car, FileText, Route, CreditCard, Wallet,
   HeadphonesIcon, Package2, ShoppingCart, Mail, Bell, Tag, Settings,
-  LogOut, ChevronRight, Gem, BookOpen,
+  LogOut, ChevronRight, Gem, BookOpen, BarChart3, X,
 } from "lucide-react";
 
 const nav = [
@@ -49,6 +49,12 @@ const nav = [
     ],
   },
   {
+    section: "Analytics",
+    items: [
+      { href: "/admin/reports", label: "Reports", Icon: BarChart3 },
+    ],
+  },
+  {
     section: "Platform",
     items: [
       { href: "/admin/pricing", label: "Pricing", Icon: Tag },
@@ -57,7 +63,9 @@ const nav = [
   },
 ];
 
-export default function AdminSidebar() {
+type Props = { mobileOpen?: boolean; onClose?: () => void };
+
+export default function AdminSidebar({ mobileOpen, onClose }: Props) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -68,16 +76,32 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="w-60 min-h-screen bg-[#070C18] border-r border-white/5 flex flex-col shrink-0">
+    <>
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 bg-black/60 z-40 lg:hidden" onClick={onClose} />
+      )}
+
+      <aside className={`
+        fixed lg:static inset-y-0 left-0 z-50 lg:z-auto
+        w-64 lg:w-60 min-h-screen bg-[#070C18] border-r border-white/5 flex flex-col shrink-0
+        transition-transform duration-300 ease-in-out
+        ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}>
       {/* Logo */}
       <div className="px-5 py-5 border-b border-white/5">
-        <Link href="/admin" className="flex items-center gap-3">
-          <Image src="/logo.png" alt="Rider Africa" width={32} height={32} className="rounded-lg shrink-0" />
-          <div className="min-w-0">
-            <p className="text-white font-black text-sm leading-none">Rider Africa</p>
-            <p className="text-[#0073FF] text-[10px] font-semibold uppercase tracking-widest mt-0.5">Admin Console</p>
-          </div>
-        </Link>
+        <div className="flex items-center justify-between w-full">
+          <Link href="/admin" className="flex items-center gap-3">
+            <Image src="/logo.png" alt="Rider Africa" width={32} height={32} className="rounded-lg shrink-0" />
+            <div className="min-w-0">
+              <p className="text-white font-black text-sm leading-none">Rider Africa</p>
+              <p className="text-[#0073FF] text-[10px] font-semibold uppercase tracking-widest mt-0.5">Admin Console</p>
+            </div>
+          </Link>
+          <button onClick={onClose} className="lg:hidden text-gray-500 hover:text-white transition-colors">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       {/* Nav */}
@@ -93,6 +117,7 @@ export default function AdminSidebar() {
                 <Link
                   key={href}
                   href={href}
+                  onClick={onClose}
                   className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all mb-0.5 ${
                     isActive
                       ? "text-white font-semibold"
@@ -135,5 +160,6 @@ export default function AdminSidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }
