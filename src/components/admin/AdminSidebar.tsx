@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import {
   LayoutDashboard, Users, Car, FileText, Route, CreditCard, Wallet,
   HeadphonesIcon, Package2, ShoppingCart, Mail, Bell, Tag, Settings,
@@ -54,7 +56,8 @@ export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const signOut = async () => {
+  const handleSignOut = async () => {
+    await signOut(auth).catch(() => {});
     await fetch("/api/admin/auth/logout", { method: "POST" });
     router.push("/admin/login");
   };
@@ -100,7 +103,7 @@ export default function AdminSidebar() {
       <div className="px-3 py-4 border-t border-white/5">
         <p className="text-gray-600 text-xs px-3 mb-2 truncate">{process.env.NEXT_PUBLIC_ADMIN_EMAIL || "admin"}</p>
         <button
-          onClick={signOut}
+          onClick={handleSignOut}
           className="flex items-center gap-3 w-full px-3 py-2 rounded-xl text-sm text-gray-400 hover:text-red-400 hover:bg-red-400/10 transition-all"
         >
           <LogOut className="w-4 h-4" strokeWidth={1.75} />

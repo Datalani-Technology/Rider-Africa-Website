@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -81,7 +82,26 @@ const socialLinks = [
 
 export default function Footer() {
   const pathname = usePathname();
+  const [subEmail, setSubEmail] = useState("");
+  const [subStatus, setSubStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+
   if (pathname.startsWith("/admin")) return null;
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubStatus("loading");
+    try {
+      await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: subEmail }),
+      });
+      setSubStatus("done");
+      setSubEmail("");
+    } catch {
+      setSubStatus("error");
+    }
+  };
   return (
     <footer className="bg-[#090E1A] text-gray-400 pt-16 pb-8 border-t border-[#0073FF]/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -192,6 +212,37 @@ export default function Footer() {
               </a>
             </div>
           </div>
+        </div>
+
+        {/* Newsletter */}
+        <div className="border-t border-[#0073FF]/10 pt-10 pb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <h4 className="text-white font-semibold mb-1">Stay in the loop</h4>
+              <p className="text-gray-500 text-sm">Get updates on new features, promotions, and Rider Africa news.</p>
+            </div>
+            {subStatus === "done" ? (
+              <p className="text-green-400 text-sm font-medium">You&apos;re subscribed!</p>
+            ) : (
+              <form onSubmit={handleSubscribe} className="flex gap-2 w-full sm:w-auto">
+                <input
+                  type="email" required
+                  value={subEmail}
+                  onChange={e => setSubEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="flex-1 sm:w-56 bg-[#0D1526] border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-[#0073FF]"
+                />
+                <button
+                  type="submit"
+                  disabled={subStatus === "loading"}
+                  className="px-5 py-2.5 bg-[#0073FF] hover:bg-[#0055CC] disabled:opacity-60 text-white font-semibold rounded-xl text-sm transition-colors shrink-0"
+                >
+                  {subStatus === "loading" ? "…" : "Subscribe"}
+                </button>
+              </form>
+            )}
+          </div>
+          {subStatus === "error" && <p className="text-red-400 text-xs mt-2">Something went wrong. Please try again.</p>}
         </div>
 
         <div className="border-t border-[#0073FF]/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs">

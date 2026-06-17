@@ -55,7 +55,6 @@ export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
   const typewriterText = useTypewriter(["Delivered.", "Connected.", "Moving."]);
 
   return (
@@ -94,7 +93,7 @@ export default function HeroSection() {
           animate={{ rotate: -360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
       </div>
 
-      <motion.div style={{ y, opacity }} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+      <motion.div style={{ y }} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
 
           {/* Left */}

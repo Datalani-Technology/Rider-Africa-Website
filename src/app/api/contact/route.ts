@@ -1,5 +1,7 @@
 import { NextRequest } from "next/server";
 import nodemailer from "nodemailer";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,11 +12,24 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    const isDriverApp = subject === "Driver Partner Application";
+
+    // Save to Firestore
+    const collectionName = isDriverApp ? "driver-applications" : "enquiries";
+    await addDoc(collection(db, collectionName), {
+      name,
+      email,
+      phone: phone || null,
+      subject,
+      message,
+      receivedAt: serverTimestamp(),
+      status: "new",
+    });
+
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
 
     if (!smtpUser || !smtpPass || smtpPass === "your-app-password") {
-      // SMTP not configured — log submission and return success so UI works
       console.log("📬 Contact form submission (SMTP not configured):", {
         name, email, phone, subject, message, receivedAt: new Date().toISOString(),
       });
@@ -28,7 +43,6 @@ export async function POST(request: NextRequest) {
       auth: { user: smtpUser, pass: smtpPass },
     });
 
-    const isDriverApp = subject === "Driver Partner Application";
     const toEmail = isDriverApp
       ? "registration@riderafrica.com"
       : (process.env.CONTACT_EMAIL || "admin@riderafrica.com");

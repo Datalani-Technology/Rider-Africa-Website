@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 export default function AdminLoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -12,14 +14,20 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const res = await fetch("/api/admin/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    if (res.ok) {
-      router.push("/admin");
-    } else {
+    try {
+      const credential = await signInWithEmailAndPassword(auth, form.email, form.password);
+      const idToken = await credential.user.getIdToken();
+      const res = await fetch("/api/admin/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+      });
+      if (res.ok) {
+        router.push("/admin");
+      } else {
+        setError("Access denied. Account is not authorised.");
+      }
+    } catch {
       setError("Invalid email or password.");
     }
     setLoading(false);
@@ -28,7 +36,6 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-[#070C18] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
-        {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
           <div className="w-10 h-10 bg-[#0073FF] rounded-xl flex items-center justify-center text-white font-black">R</div>
           <span className="text-white font-black text-xl">Rider <span className="text-[#0073FF]">Africa</span></span>
