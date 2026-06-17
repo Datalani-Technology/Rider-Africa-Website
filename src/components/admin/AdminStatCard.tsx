@@ -15,29 +15,37 @@ export default function AdminStatCard({
 }: Props) {
   if (loading) {
     return (
-      <div className="relative bg-[#0D1526] border border-white/5 rounded-2xl p-6 overflow-hidden animate-pulse">
-        <div className="h-3 w-24 bg-white/5 rounded mb-4" />
-        <div className="h-8 w-16 bg-white/5 rounded mb-2" />
-        <div className="h-2 w-20 bg-white/5 rounded" />
+      <div className="relative rounded-2xl p-6 overflow-hidden animate-pulse border"
+        style={{ background: "var(--adm-card)", borderColor: "var(--adm-border)" }}>
+        <div className="h-3 w-24 rounded mb-4" style={{ background: "var(--adm-hover)" }} />
+        <div className="h-8 w-16 rounded mb-2" style={{ background: "var(--adm-hover)" }} />
+        <div className="h-2 w-20 rounded" style={{ background: "var(--adm-hover)" }} />
       </div>
     );
   }
 
   const TrendIcon = trend === undefined || trend === 0 ? Minus : trend > 0 ? TrendingUp : TrendingDown;
-  const trendColor = trend === undefined || trend === 0 ? "text-gray-500" : trend > 0 ? "text-emerald-400" : "text-red-400";
+  const trendColor = trend === undefined || trend === 0 ? "var(--adm-text-3)" : trend > 0 ? "#10B981" : "#EF4444";
 
   return (
-    <div className="group relative bg-[#0D1526] border border-white/5 rounded-2xl p-6 overflow-hidden transition-all duration-300 hover:border-white/10 hover:shadow-xl"
-      style={{ boxShadow: "0 0 0 0 transparent" }}
-      onMouseEnter={e => (e.currentTarget.style.boxShadow = `0 0 40px ${color}18`)}
-      onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 0 0 transparent")}
+    <div
+      className="group relative rounded-2xl p-6 overflow-hidden transition-all duration-300 border"
+      style={{ background: "var(--adm-card)", borderColor: "var(--adm-border)" }}
+      onMouseEnter={e => {
+        e.currentTarget.style.boxShadow = `0 0 40px ${color}20`;
+        e.currentTarget.style.borderColor = `${color}30`;
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.boxShadow = "none";
+        e.currentTarget.style.borderColor = "var(--adm-border)";
+      }}
     >
       {/* Gradient accent top bar */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl"
+      <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl"
         style={{ background: `linear-gradient(90deg, ${color}, ${color}00)` }} />
 
       {/* Background icon */}
-      <div className="absolute -right-4 -bottom-4 opacity-[0.04]">
+      <div className="absolute -right-4 -bottom-4 opacity-[0.05]">
         <Icon className="w-24 h-24" style={{ color }} />
       </div>
 
@@ -48,20 +56,25 @@ export default function AdminStatCard({
         </div>
 
         {trend !== undefined && (
-          <span className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${trendColor}`}
-            style={{ background: trend === 0 ? "rgba(255,255,255,0.04)" : trend > 0 ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)" }}>
+          <span className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full"
+            style={{
+              color: trendColor,
+              background: trend === 0 ? "var(--adm-hover)" : trend > 0 ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)",
+            }}>
             <TrendIcon className="w-3 h-3" strokeWidth={2} />
             {trend !== 0 ? `${Math.abs(trend)}%` : "Flat"}
           </span>
         )}
       </div>
 
-      <p className="text-gray-400 text-xs font-medium uppercase tracking-wider mb-1">{label}</p>
-      <p className="text-3xl font-black text-white mb-1"
-        style={{ textShadow: `0 0 40px ${color}40` }}>
+      <p className="text-xs font-semibold uppercase tracking-widest mb-1.5"
+        style={{ color: "var(--adm-text-3)" }}>{label}</p>
+      <p className="text-3xl font-black mb-1" style={{ color: "var(--adm-text)" }}>
         {typeof value === "number" ? value.toLocaleString() : value}
       </p>
-      {trendLabel && <p className="text-gray-600 text-xs">{trendLabel}</p>}
+      {trendLabel && (
+        <p className="text-sm" style={{ color: "var(--adm-text-4)" }}>{trendLabel}</p>
+      )}
     </div>
   );
 }

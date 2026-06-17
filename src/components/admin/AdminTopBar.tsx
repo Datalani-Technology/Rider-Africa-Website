@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Bell, Search, Menu } from "lucide-react";
+import { Bell, Search, Menu, Sun, Moon } from "lucide-react";
 
 const labels: Record<string, string> = {
   "/admin": "Dashboard",
@@ -24,7 +24,13 @@ const labels: Record<string, string> = {
   "/admin/reports": "Reports & Analytics",
 };
 
-export default function AdminTopBar({ onMenuToggle }: { onMenuToggle?: () => void }) {
+type Props = {
+  onMenuToggle?: () => void;
+  theme?: "dark" | "light";
+  onThemeToggle?: () => void;
+};
+
+export default function AdminTopBar({ onMenuToggle, theme = "dark", onThemeToggle }: Props) {
   const pathname = usePathname();
   const title = labels[pathname] ?? "Admin";
   const [time, setTime] = useState("");
@@ -39,45 +45,70 @@ export default function AdminTopBar({ onMenuToggle }: { onMenuToggle?: () => voi
   }, []);
 
   const today = new Date().toLocaleDateString("en-NA", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+  const isLight = theme === "light";
 
   return (
-    <header className="h-16 bg-[#070C18]/80 backdrop-blur-sm border-b border-white/5 flex items-center px-4 lg:px-6 shrink-0 gap-3 lg:gap-4">
+    <header className="h-16 backdrop-blur-sm border-b flex items-center px-4 lg:px-6 shrink-0 gap-3 lg:gap-4 transition-colors"
+      style={{
+        background: "var(--adm-topbar)",
+        borderColor: "var(--adm-border)",
+      }}>
+
       {/* Hamburger — mobile only */}
-      <button onClick={onMenuToggle} className="lg:hidden w-9 h-9 flex items-center justify-center text-gray-400 hover:text-white transition-colors shrink-0">
+      <button onClick={onMenuToggle}
+        className="lg:hidden w-9 h-9 flex items-center justify-center transition-colors shrink-0"
+        style={{ color: "var(--adm-text-3)" }}>
         <Menu className="w-5 h-5" />
       </button>
 
       {/* Title */}
       <div className="flex-1 min-w-0">
-        <h1 className="text-white font-bold text-base leading-none">{title}</h1>
-        <p className="text-gray-600 text-xs mt-0.5">Rider Africa Operations Platform</p>
+        <h1 className="font-bold text-base leading-none" style={{ color: "var(--adm-text)" }}>{title}</h1>
+        <p className="text-xs mt-0.5" style={{ color: "var(--adm-text-3)" }}>Rider Africa Operations Platform</p>
       </div>
 
       {/* Search */}
-      <div className="hidden md:flex items-center gap-2 bg-white/4 border border-white/6 rounded-xl px-3 py-2 w-48 xl:w-64">
-        <Search className="w-3.5 h-3.5 text-gray-600 shrink-0" />
+      <div className="hidden md:flex items-center gap-2 rounded-xl px-3 py-2 w-48 xl:w-64 border"
+        style={{ background: "var(--adm-hover)", borderColor: "var(--adm-border-md)" }}>
+        <Search className="w-3.5 h-3.5 shrink-0" style={{ color: "var(--adm-text-3)" }} />
         <input
-          className="bg-transparent text-xs text-gray-400 placeholder-gray-600 focus:outline-none w-full"
+          className="bg-transparent text-sm placeholder-current focus:outline-none w-full"
+          style={{ color: "var(--adm-text-3)" }}
           placeholder="Search…"
           readOnly
         />
-        <kbd className="text-gray-700 text-[10px] bg-white/5 px-1.5 py-0.5 rounded font-mono hidden xl:block">⌘K</kbd>
+        <kbd className="text-[10px] px-1.5 py-0.5 rounded font-mono hidden xl:block"
+          style={{ color: "var(--adm-text-4)", background: "var(--adm-hover)" }}>⌘K</kbd>
       </div>
 
       {/* Date + time */}
       <div className="hidden sm:flex flex-col items-end text-right">
-        <span className="text-white text-xs font-medium">{time}</span>
-        <span className="text-gray-600 text-[10px]">{today}</span>
+        <span className="text-sm font-medium" style={{ color: "var(--adm-text)" }}>{time}</span>
+        <span className="text-xs" style={{ color: "var(--adm-text-3)" }}>{today}</span>
       </div>
 
       {/* Status dot */}
       <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2.5 py-1">
         <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-        <span className="text-emerald-400 text-[10px] font-semibold uppercase tracking-wide hidden sm:block">Live</span>
+        <span className="text-emerald-400 text-xs font-semibold uppercase tracking-wide hidden sm:block">Live</span>
       </div>
 
+      {/* Light / Dark toggle */}
+      <button
+        onClick={onThemeToggle}
+        title={isLight ? "Switch to dark mode" : "Switch to light mode"}
+        className="w-9 h-9 rounded-xl flex items-center justify-center border transition-all"
+        style={{
+          background: "var(--adm-hover)",
+          borderColor: "var(--adm-border-md)",
+          color: isLight ? "#F59E0B" : "#93C5FD",
+        }}>
+        {isLight ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+      </button>
+
       {/* Notifications */}
-      <button className="relative w-9 h-9 bg-white/4 border border-white/6 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/8 transition-all">
+      <button className="relative w-9 h-9 rounded-xl flex items-center justify-center border transition-all"
+        style={{ background: "var(--adm-hover)", borderColor: "var(--adm-border-md)", color: "var(--adm-text-3)" }}>
         <Bell className="w-4 h-4" strokeWidth={1.75} />
       </button>
 
