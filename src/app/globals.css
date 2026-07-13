@@ -90,12 +90,19 @@ body {
 }
 
 /* ── Page entrance ──────────────────────────────── */
+/* Content is always visible (opacity: 1 default). Only position animates. */
 .page-enter {
-  animation: fadeInUp 0.45s ease forwards;
+  animation: slideUp 0.45s ease forwards;
 }
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes slideUp {
+  from { transform: translateY(18px); }
+  to   { transform: translateY(0); }
+}
+
+/* ── Toast countdown bar ────────────────────────── */
+@keyframes shrink-bar {
+  from { width: 100%; }
+  to   { width: 0%; }
 }
 
 /* ── Glow button ────────────────────────────────── */
@@ -129,6 +136,16 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: #0073FF; border-radius: 3px; }
+
+/* ── Hide scrollbar utility ─────────────────────── */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ── Content visibility fallback ────────────────── */
+/* Ensures framer-motion animated elements are visible even if JS doesn't fire */
+.motion-safe-visible {
+  opacity: 1 !important;
+}
 
 /* ── Mobile performance ─────────────────────────── */
 button, a { touch-action: manipulation; }

@@ -16,6 +16,8 @@ const companyLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
   { href: "/services", label: "Services" },
+  { href: "/shop", label: "Shop" },
+  { href: "/pawn", label: "Pawn Services" },
   { href: "/become-a-driver", label: "Become a Driver" },
   { href: "/investors", label: "Investors" },
   { href: "/blog", label: "Blog & News" },

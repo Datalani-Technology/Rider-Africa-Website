@@ -8,7 +8,7 @@ import { auth } from "@/lib/firebase";
 import {
   LayoutDashboard, Users, Car, FileText, Route, CreditCard, Wallet,
   HeadphonesIcon, Package2, ShoppingCart, Mail, Bell, Tag, Settings,
-  LogOut, ChevronRight, ChevronDown, Gem, BookOpen, BarChart3, X,
+  LogOut, ChevronRight, ChevronDown, Gem, BookOpen, BarChart3, X, Store,
 } from "lucide-react";
 import ConfirmModal from "./ConfirmModal";
 
@@ -34,6 +34,8 @@ const nav = [
       { href: "/admin/requests", label: "Trips & Requests", Icon: Route },
       { href: "/admin/payments", label: "Payments", Icon: CreditCard },
       { href: "/admin/withdrawals", label: "Withdrawals", Icon: Wallet },
+      { href: "/admin/shop", label: "Shop Products", Icon: Store },
+      { href: "/admin/grocery", label: "Grocery Reports", Icon: ShoppingCart },
     ],
   },
   {
@@ -42,7 +44,6 @@ const nav = [
     items: [
       { href: "/admin/support", label: "Support Queues", Icon: HeadphonesIcon },
       { href: "/admin/pawning", label: "Pawning", Icon: Gem },
-      { href: "/admin/grocery", label: "Grocery Items", Icon: ShoppingCart },
     ],
   },
   {

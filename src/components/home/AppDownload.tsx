@@ -24,8 +24,8 @@ export default function AppDownload() {
 
           {/* Left: Logo + text */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ x: -20 }}
+            whileInView={{ x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
@@ -107,8 +107,8 @@ export default function AppDownload() {
 
           {/* Right: QR codes + badges */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ x: 20 }}
+            whileInView={{ x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
             className="flex justify-center lg:justify-end"

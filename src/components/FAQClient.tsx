@@ -49,6 +49,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
     <div className="border border-gray-100 rounded-2xl overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
         className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-white hover:bg-[#F4F7FF] transition-colors"
       >
         <span className="font-semibold text-gray-900 text-sm sm:text-base">{q}</span>
@@ -72,6 +73,7 @@ export default function FAQClient() {
               <button
                 key={cat.label}
                 onClick={() => setActiveCategory(i)}
+                aria-pressed={activeCategory === i}
                 className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                   activeCategory === i
                     ? "bg-[#0073FF] text-white shadow-[0_4px_16px_rgba(0,115,255,0.35)]"

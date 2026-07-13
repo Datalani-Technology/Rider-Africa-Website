@@ -98,7 +98,7 @@ export default function CancellationPage() {
       <h2>6. Disputes</h2>
       <p>
         If you believe a cancellation fee was applied incorrectly, contact us
-        at <strong>info@riderafrica.com</strong> within 24 hours of the
+        at <strong>admin@riderafrica.com</strong> within 24 hours of the
         cancellation. We will investigate and respond within 2 business days.
       </p>
 

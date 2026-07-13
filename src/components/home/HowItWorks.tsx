@@ -10,14 +10,39 @@ const steps = [
   { Icon: PackageCheck, step: "04", title: "Track & Receive", description: "Real-time tracking — delivered safe to your door." },
 ];
 
+function StepCard({ s, i }: { s: (typeof steps)[number]; i: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ y: 30 }}
+      animate={inView ? { y: 0 } : { y: 30 }}
+      transition={{ duration: 0.55, delay: i * 0.15 }}
+      className="relative z-10 flex flex-col items-center text-center"
+    >
+      <motion.div
+        className="w-20 h-20 rounded-full bg-gradient-to-br from-[#0073FF] to-[#003EA6] flex items-center justify-center mb-4 shadow-[0_8px_24px_rgba(0,115,255,0.35)]"
+        whileHover={{ scale: 1.12, rotate: 6 }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
+        <s.Icon className="w-9 h-9 text-white" strokeWidth={1.5} />
+      </motion.div>
+      <span className="text-[#0073FF] font-black text-sm mb-1 tracking-wider">{s.step}</span>
+      <h3 className="text-lg font-black text-gray-900 mb-2">{s.title}</h3>
+      <p className="text-gray-500 text-sm leading-relaxed">{s.description}</p>
+    </motion.div>
+  );
+}
+
 export default function HowItWorks() {
   return (
     <section id="how-it-works" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: 20 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
@@ -30,31 +55,7 @@ export default function HowItWorks() {
           {/* Connector line */}
           <div className="hidden lg:block absolute top-10 left-[13%] right-[13%] h-px bg-gradient-to-r from-transparent via-[#0073FF]/30 to-transparent z-0" />
 
-          {steps.map((s, i) => {
-            const ref = useRef(null);
-            const inView = useInView(ref, { once: true, margin: "-60px" });
-            return (
-              <motion.div
-                key={s.step}
-                ref={ref}
-                initial={{ opacity: 0, y: 40 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.55, delay: i * 0.15 }}
-                className="relative z-10 flex flex-col items-center text-center"
-              >
-                <motion.div
-                  className="w-20 h-20 rounded-full bg-gradient-to-br from-[#0073FF] to-[#003EA6] flex items-center justify-center mb-4 shadow-[0_8px_24px_rgba(0,115,255,0.35)]"
-                  whileHover={{ scale: 1.12, rotate: 6 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <s.Icon className="w-9 h-9 text-white" strokeWidth={1.5} />
-                </motion.div>
-                <span className="text-[#0073FF] font-black text-sm mb-1 tracking-wider">{s.step}</span>
-                <h3 className="text-lg font-black text-gray-900 mb-2">{s.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{s.description}</p>
-              </motion.div>
-            );
-          })}
+          {steps.map((s, i) => <StepCard key={s.step} s={s} i={i} />)}
         </div>
       </div>
     </section>

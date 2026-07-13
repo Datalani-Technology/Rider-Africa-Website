@@ -22,6 +22,7 @@ const labels: Record<string, string> = {
   "/admin/blog": "Blog & News",
   "/admin/blog/new": "New Blog Post",
   "/admin/reports": "Reports & Analytics",
+  "/admin/shop": "Shop Products",
 };
 
 type Props = {

@@ -1,9 +1,9 @@
 "use client";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Package, Car, ShoppingCart, Gem, CheckCircle, Star, Apple } from "lucide-react";
+import { Package, Car, ShoppingCart, Gem, Star, Apple, ShoppingBag, ArrowRight } from "lucide-react";
 
 const floatingChips = [
   { Icon: Package, label: "Parcel Delivered!", x: "-135%", y: "12%", delay: 0 },
@@ -52,20 +52,12 @@ function useTypewriter(words: string[], speed = 75, pause = 2000) {
 }
 
 export default function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 180]);
   const typewriterText = useTypewriter(["Delivered.", "Connected.", "Moving."]);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#090E1A]">
-      {/* Background video */}
-      <video autoPlay muted loop playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-20"
-        poster="/images/hero-poster.jpg"
-      >
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#090E1A]">
+      {/* Gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#090E1A] via-[#0D1526] to-[#001A4D]" />
 
       {/* Animated orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -93,38 +85,30 @@ export default function HeroSection() {
           animate={{ rotate: -360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
       </div>
 
-      <motion.div style={{ y }} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-          {/* Left */}
-          <div>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 bg-[#0073FF]/15 border border-[#0073FF]/30 text-[#4DA6FF] text-sm font-medium px-4 py-2 rounded-full mb-6 backdrop-blur-sm"
-            >
+          {/* Left — always visible, no opacity:0 */}
+          <div className="page-enter">
+            <div className="inline-flex items-center gap-2 bg-[#0073FF]/15 border border-[#0073FF]/30 text-[#4DA6FF] text-sm font-medium px-4 py-2 rounded-full mb-6 backdrop-blur-sm">
               <span className="w-2 h-2 bg-[#0073FF] rounded-full animate-pulse" />
               Proudly Namibian · Live on iOS & Android
-            </motion.div>
+            </div>
 
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }}
-              className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] mb-6"
-            >
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] mb-6">
               Everything
               <br />
               <span className="gradient-text" suppressHydrationWarning>
                 {typewriterText}
                 <span className="animate-pulse text-[#0073FF]">|</span>
               </span>
-            </motion.h1>
+            </h1>
 
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
-              className="text-lg text-gray-400 max-w-lg mb-10 leading-relaxed"
-            >
+            <p className="text-lg text-gray-400 max-w-lg mb-10 leading-relaxed">
               Rider Africa is Namibia&apos;s on-demand platform for package delivery, passenger transport, grocery runs, and more.
-            </motion.p>
+            </p>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.45 }}
-              className="flex flex-col sm:flex-row gap-4 mb-12"
-            >
+            <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <a href="https://apps.apple.com/na/app/riderafrica/id6741062391" target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 bg-[#0073FF] hover:bg-[#0055CC] text-white font-bold px-6 py-4 rounded-2xl transition-all shadow-[0_8px_32px_rgba(0,115,255,0.45)] hover:shadow-[0_12px_40px_rgba(0,115,255,0.6)] hover:-translate-y-1 btn-glow"
               >
@@ -145,26 +129,38 @@ export default function HeroSection() {
                   <span className="text-lg leading-tight">Google Play</span>
                 </span>
               </a>
-            </motion.div>
+            </div>
 
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.65 }}
-              className="flex items-center gap-8"
-            >
+            {/* Direct service CTAs — web ordering */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <Link href="/shop"
+                className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 border border-white/20 hover:border-[#0073FF]/60 text-white font-bold px-5 py-3 rounded-xl text-sm transition-all"
+              >
+                <ShoppingBag className="w-4 h-4" strokeWidth={2} />
+                Browse Shop
+                <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} />
+              </Link>
+              <Link href="/pawn"
+                className="flex items-center justify-center gap-2 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 hover:border-amber-500/60 text-amber-300 font-bold px-5 py-3 rounded-xl text-sm transition-all"
+              >
+                <Gem className="w-4 h-4" strokeWidth={2} />
+                Pawn an Asset
+                <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} />
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-8 pt-2">
               {[{ v: "5.0", l: "App Rating" }, { v: "500+", l: "Active Drivers" }, { v: "10K+", l: "Deliveries" }].map((s) => (
                 <div key={s.l}>
                   <p className="text-2xl font-black text-white">{s.v}</p>
                   <p className="text-xs text-gray-500">{s.l}</p>
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
 
           {/* Right: Phone mockup */}
-          <motion.div
-            initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.3, type: "spring", stiffness: 80 }}
-            className="relative flex justify-center lg:justify-end"
-          >
+          <div className="relative flex justify-center lg:justify-end page-enter">
             <div className="relative">
               <div className="absolute inset-0 blur-3xl bg-[#0073FF]/25 rounded-full scale-90" />
 
@@ -180,16 +176,14 @@ export default function HeroSection() {
                   <p className="text-white font-black text-xl mb-1">Rider Africa</p>
                   <p className="text-[#4DA6FF] text-xs mb-8">Your city. On demand.</p>
 
-                  {phoneServices.map((item, i) => (
-                    <motion.div
+                  {phoneServices.map((item) => (
+                    <div
                       key={item.label}
-                      initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.8 + i * 0.15 }}
                       className="w-full flex items-center gap-3 bg-[#0073FF]/15 border border-[#0073FF]/30 rounded-xl px-4 py-3 mb-2.5 text-white text-sm font-semibold"
                     >
                       <item.Icon className="w-4 h-4 text-[#4DA6FF] shrink-0" strokeWidth={2} />
                       {item.label}
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
                 <div className="flex justify-center mt-2">
@@ -200,13 +194,8 @@ export default function HeroSection() {
               {/* Floating chips */}
               {floatingChips.map((chip, i) => (
                 <motion.div key={i}
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
-                  transition={{
-                    opacity: { delay: 1.2 + chip.delay, duration: 0.5 },
-                    scale: { delay: 1.2 + chip.delay, duration: 0.5 },
-                    y: { delay: 1.2 + chip.delay, duration: 3 + i, repeat: Infinity, ease: "easeInOut" },
-                  }}
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ delay: chip.delay, duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
                   className="absolute flex items-center gap-2 bg-[#0D1526]/90 border border-[#0073FF]/30 backdrop-blur-sm text-white text-xs font-semibold px-3 py-2 rounded-xl whitespace-nowrap"
                   style={{ left: chip.x, top: chip.y }}
                 >
@@ -215,9 +204,9 @@ export default function HeroSection() {
                 </motion.div>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Scroll indicator */}
       <motion.div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"

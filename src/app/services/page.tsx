@@ -17,6 +17,13 @@ const services = [
     description: "Rider Africa provides on-demand courier services for packages, documents, parcels, and goods throughout Namibia. Customers place a pickup request via the app, specify the recipient address, and a verified Rider Africa driver collects and delivers the item directly to the recipient.",
     features: ["Same-day delivery within city limits", "Real-time GPS tracking", "Proof of delivery via photo", "Fragile and sensitive item handling", "Business and bulk dispatch options"],
     gradient: "from-[#0073FF] to-[#003EA6]",
+    subLinks: [
+      { href: "/services/local-parcel", label: "Local Parcel Delivery" },
+      { href: "/services/international-parcel", label: "International Parcel" },
+      { href: "/services/container-shipment", label: "Container Shipments" },
+      { href: "/services/flight-delivery", label: "Flight Delivery" },
+      { href: "/services/fast-delivery", label: "Fast Delivery" },
+    ],
   },
   {
     Icon: Car,
@@ -25,6 +32,7 @@ const services = [
     description: "Rider Africa connects passengers with vetted, background-checked drivers for safe and affordable transportation. Whether it is a short city trip, an airport transfer, or a long-distance journey, passengers can book via the app and track their driver in real time.",
     features: ["City rides and long-distance trips", "Airport transfers", "Advance and on-demand booking", "Fixed upfront pricing — no surge surprises", "Female driver option available", "Child seat request option"],
     gradient: "from-[#00C3FF] to-[#0073FF]",
+    subLinks: [{ href: "/services/transport", label: "Rider Transportation Details" }],
   },
   {
     Icon: ShoppingCart,
@@ -33,6 +41,7 @@ const services = [
     description: "Customers can request grocery shopping and delivery through the Rider Africa app. A driver shops for the listed items from partner stores or stores specified by the customer, then delivers them fresh to the customer's address.",
     features: ["Shop from any local store", "Detailed shopping list support", "Fresh produce handling", "Delivery within hours", "Receipt provided for all purchases"],
     gradient: "from-[#0055CC] to-[#003EA6]",
+    subLinks: [{ href: "/shop", label: "Browse the Shop" }],
   },
   {
     Icon: Gem,
@@ -41,6 +50,7 @@ const services = [
     description: "Rider Africa provides a specialised courier service for high-value items including pawned goods, jewellery, electronics, documents, and other valuables. These deliveries are assigned to senior, verified drivers and require recipient signature confirmation.",
     features: ["Assigned to senior verified drivers", "Recipient signature on delivery", "Tamper-evident packaging option", "Insurance declaration available", "Chain-of-custody documentation"],
     gradient: "from-[#4DA6FF] to-[#0073FF]",
+    subLinks: [{ href: "/pawn", label: "Pawn an Asset" }],
   },
 ];
 
@@ -82,6 +92,16 @@ export default function ServicesPage() {
                       </li>
                     ))}
                   </ul>
+                  {service.subLinks.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-gray-200">
+                      {service.subLinks.map((l) => (
+                        <Link key={l.href} href={l.href}
+                          className="text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-[#0073FF]/20 text-[#0073FF] hover:bg-[#0073FF] hover:text-white transition-colors">
+                          {l.label} →
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
               {i < services.length - 1 && <hr className="border-gray-100 mt-8" />}

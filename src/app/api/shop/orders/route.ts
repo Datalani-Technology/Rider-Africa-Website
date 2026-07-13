@@ -1,0 +1,12 @@
+import { NextRequest } from "next/server";
+import { createShopOrder, getShopOrders } from "@/lib/firebase-admin";
+
+export async function GET() {
+  return Response.json(await getShopOrders());
+}
+
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const order = await createShopOrder({ ...body, status: "pending_payment" });
+  return Response.json(order, { status: 201 });
+}

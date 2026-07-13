@@ -10,6 +10,8 @@ interface Props {
   direction?: "up" | "left" | "right" | "none";
 }
 
+// Content is ALWAYS visible. We only animate position (y/x transform).
+// This prevents blank pages when framer-motion doesn't hydrate correctly on network devices.
 export default function AnimateOnScroll({
   children,
   className = "",
@@ -17,13 +19,20 @@ export default function AnimateOnScroll({
   direction = "up",
 }: Props) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const inView = useInView(ref, { once: true, margin: "-40px" });
 
   const initialMap = {
-    up: { opacity: 0, y: 40 },
-    left: { opacity: 0, x: -40 },
-    right: { opacity: 0, x: 40 },
-    none: { opacity: 0 },
+    up:    { y: 32 },
+    left:  { x: -32 },
+    right: { x: 32 },
+    none:  {},
+  };
+
+  const animateMap = {
+    up:    { y: 0 },
+    left:  { x: 0 },
+    right: { x: 0 },
+    none:  {},
   };
 
   return (
@@ -31,8 +40,9 @@ export default function AnimateOnScroll({
       ref={ref}
       className={className}
       initial={initialMap[direction]}
-      animate={inView ? { opacity: 1, x: 0, y: 0 } : initialMap[direction]}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      animate={inView ? animateMap[direction] : initialMap[direction]}
+      transition={{ duration: 0.55, delay, ease: "easeOut" }}
+      style={{ opacity: 1 }}
     >
       {children}
     </motion.div>
