@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { createShopOrder, updateShopOrderStatus } from "@/lib/firebase-admin";
+import { createShopOrder, updateShopOrderStatus } from "@/lib/admin-data";
 import { createPaymentToken } from "@/lib/dpo";
 
 export async function POST(req: NextRequest) {
@@ -21,7 +21,6 @@ export async function POST(req: NextRequest) {
     address: customer.address,
     items,
     total,
-    status: "pending_payment",
   });
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";

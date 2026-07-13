@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import nodemailer from "nodemailer";
 import { verifyPaymentToken } from "@/lib/dpo";
-import { getShopOrderById, updateShopOrderStatus } from "@/lib/firebase-admin";
+import { getShopOrderById, updateShopOrderStatus } from "@/lib/admin-data";
 import { emailTemplate } from "@/lib/email-template";
 
 export async function GET(req: NextRequest) {

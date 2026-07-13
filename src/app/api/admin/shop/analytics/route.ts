@@ -1,4 +1,4 @@
-import { getProductAnalytics } from "@/lib/firebase-admin";
+import { getProductAnalytics } from "@/lib/admin-data";
 
 export async function GET() {
   return Response.json(await getProductAnalytics());

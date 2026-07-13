@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { getRestockLog, addRestockEntry } from "@/lib/firebase-admin";
+import { getRestockLog, addRestockEntry } from "@/lib/admin-data";
 
 export async function GET(req: NextRequest) {
   const productId = new URL(req.url).searchParams.get("productId") ?? undefined;

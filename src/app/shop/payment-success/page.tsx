@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, Loader2, MapPin, Package, ArrowRight } from "lucide-react";
-import { ShopOrder } from "@/lib/firebase-admin";
+import { ShopOrder } from "@/lib/firestore";
 
 export default function PaymentSuccessPage() {
   const searchParams = useSearchParams();
