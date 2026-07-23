@@ -18,7 +18,7 @@ function scrollToForm(tab: "property" | "vehicle") {
 
 export default function PawnHero() {
   return (
-    <section className="relative bg-[#090E1A] pt-16 overflow-hidden">
+    <section className="pawn-hero relative bg-[#090E1A] overflow-hidden">
       {/* Ambient glow blobs */}
       <div className="absolute top-20 left-[-60px] w-[500px] h-[500px] bg-[#0073FF]/8 rounded-full blur-[100px] pointer-events-none animate-blob" />
       <div className="absolute bottom-0 right-[-60px] w-[400px] h-[400px] bg-amber-500/6 rounded-full blur-[100px] pointer-events-none" style={{ animationDelay: "3s" }} />
@@ -40,7 +40,7 @@ export default function PawnHero() {
 
         {/* Headline */}
         <motion.div
-          className="text-center mb-6"
+          className="pawn-intro text-center mb-6"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
@@ -178,7 +178,7 @@ export default function PawnHero() {
 
         {/* How it works */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto"
+          className="pawn-steps grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
@@ -190,7 +190,7 @@ export default function PawnHero() {
           ].map((s, i) => (
             <motion.div
               key={s.n}
-              className="text-center"
+              className="pawn-step text-center"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55 + i * 0.1, duration: 0.5 }}
@@ -208,13 +208,13 @@ export default function PawnHero() {
         <div className="flex justify-center mt-12">
           <button
             onClick={() => document.getElementById("pawn-form")?.scrollIntoView({ behavior: "smooth" })}
-            className="flex flex-col items-center gap-2 text-gray-600 hover:text-amber-400 transition-colors"
+            className="pawn-application-cta flex items-center gap-3 transition-all"
           >
-            <span className="text-xs font-semibold uppercase tracking-widest">Start Your Application</span>
+            <span className="text-sm font-black uppercase tracking-wider">Start Your Application</span>
             <motion.div
               animate={{ y: [0, 6, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="w-8 h-8 border border-white/10 rounded-full flex items-center justify-center"
+              className="w-8 h-8 rounded-full flex items-center justify-center"
             >
               <ArrowRight className="w-4 h-4 rotate-90" strokeWidth={2} />
             </motion.div>

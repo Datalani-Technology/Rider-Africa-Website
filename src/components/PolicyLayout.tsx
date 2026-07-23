@@ -10,7 +10,7 @@ interface Props {
 export default function PolicyLayout({ title, subtitle, lastUpdated, children }: Props) {
   return (
     <div className="pt-16">
-      <section className="bg-[#090E1A] py-20 px-4">
+      <section className="ra-policy-hero py-20 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <AnimateOnScroll>
             <span className="inline-block bg-[#0073FF]/15 border border-[#0073FF]/30 text-[#4DA6FF] text-xs font-semibold px-3 py-1 rounded-full mb-4 uppercase tracking-widest">

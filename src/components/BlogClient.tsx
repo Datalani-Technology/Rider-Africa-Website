@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import Link from "next/link";
+import Image from "next/image";
 import { Rocket, Users, TrendingUp, Globe, BarChart3, Shield, FileText } from "lucide-react";
 
 const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string; strokeWidth?: number }>> = {
@@ -18,6 +19,7 @@ const staticPosts = [
       "After months of development and testing, Rider Africa has officially launched on the Apple App Store and Google Play. Here is everything you need to know about our launch.",
     readTime: "3 min read",
     Icon: Rocket,
+    image: "/images/blog-hero.jpg",
   },
   {
     date: "May 2026",
@@ -27,6 +29,7 @@ const staticPosts = [
       "John Nghishekwa from Windhoek went from struggling to find work to earning N$ 12,000 a month as a Rider Africa driver. Here is his story.",
     readTime: "5 min read",
     Icon: Users,
+    image: "/images/driver-hero.jpg",
   },
   {
     date: "May 2026",
@@ -36,6 +39,7 @@ const staticPosts = [
       "With smartphone adoption growing rapidly and e-commerce emerging across the continent, Namibia is perfectly positioned for the on-demand logistics boom.",
     readTime: "6 min read",
     Icon: TrendingUp,
+    image: "/images/gallery-4.jpg",
   },
   {
     date: "April 2026",
@@ -45,6 +49,7 @@ const staticPosts = [
       "Rider Africa now supports international parcel delivery and container shipments — opening Namibia to the world. Here is how it works.",
     readTime: "4 min read",
     Icon: Globe,
+    image: "/images/gallery-3.jpg",
   },
   {
     date: "April 2026",
@@ -54,6 +59,7 @@ const staticPosts = [
       "We reflect on our first full month of operations — the wins, the lessons, and what is coming next for Rider Africa and Namibia.",
     readTime: "4 min read",
     Icon: BarChart3,
+    image: "/images/gallery-6.jpg",
   },
   {
     date: "March 2026",
@@ -63,6 +69,7 @@ const staticPosts = [
       "Trust is everything. Here is our full driver verification and background check process — and why we never cut corners on safety.",
     readTime: "5 min read",
     Icon: Shield,
+    image: "/images/gallery-5.jpg",
   },
 ];
 
@@ -91,6 +98,7 @@ export default function BlogClient() {
         excerpt: p.excerpt,
         readTime: "3 min read",
         Icon: CATEGORY_ICONS[p.category] ?? FileText,
+        image: "/images/blog-hero.jpg",
       }))
     : staticPosts;
 
@@ -103,12 +111,12 @@ export default function BlogClient() {
   const FeaturedIcon = featured?.Icon;
 
   return (
-    <section className="py-20 bg-[#F4F7FF]">
+    <section className="blog-editorial py-20 bg-[#F4F7FF]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Category filter */}
         <AnimateOnScroll>
-          <div className="flex flex-wrap gap-2 mb-12">
+          <div className="blog-filters flex flex-wrap gap-2 mb-12">
             {categories.map((c) => (
               <button
                 key={c}
@@ -141,7 +149,9 @@ export default function BlogClient() {
         {/* Featured / first post in filtered results */}
         {featured && (
           <AnimateOnScroll className="mb-8" key={featured.title}>
-            <div className="bg-gradient-to-br from-[#0073FF] to-[#003EA6] rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden">
+            <div className="blog-featured rounded-3xl text-white relative overflow-hidden">
+              <div className="blog-featured-image"><Image src={featured.image} alt="" fill sizes="(max-width:850px) 100vw,45vw" /></div>
+              <div className="blog-featured-copy">
               <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full" />
               <span className="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
                 {activeCategory === "All" ? "Latest Post" : featured.category}
@@ -160,6 +170,7 @@ export default function BlogClient() {
               >
                 Read More →
               </Link>
+              </div>
             </div>
           </AnimateOnScroll>
         )}
@@ -169,12 +180,8 @@ export default function BlogClient() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {rest.map((post, i) => (
               <AnimateOnScroll key={post.title} delay={i * 0.08}>
-                <article className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm service-card flex flex-col h-full">
-                  <div className="bg-gradient-to-br from-[#0073FF]/10 to-[#003EA6]/10 px-8 py-10 flex items-center justify-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#0073FF] to-[#003EA6] rounded-2xl flex items-center justify-center shadow-[0_8px_24px_rgba(0,115,255,0.3)]">
-                      <post.Icon className="w-8 h-8 text-white" strokeWidth={1.75} />
-                    </div>
-                  </div>
+                <article className="blog-card bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm flex flex-col h-full">
+                  <div className="blog-card-image"><Image src={post.image} alt="" fill sizes="(max-width:650px) 100vw,33vw" /><span><post.Icon /></span></div>
                   <div className="p-6 flex-1 flex flex-col">
                     <div className="flex items-center gap-2 mb-3">
                       <span className="bg-[#0073FF]/10 text-[#0073FF] text-xs font-semibold px-2.5 py-1 rounded-full">

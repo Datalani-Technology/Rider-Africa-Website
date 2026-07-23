@@ -4,7 +4,9 @@ import Link from "next/link";
 import {
   ShoppingCart, Leaf, GlassWater, Pill, Fuel, ShoppingBag,
   Plus, Minus, X, CheckCircle2, MapPin, ChevronRight, Trash2,
-  Shield, Zap, Clock, Star, ArrowRight, PackageCheck, Car, Gem, Sparkles,
+  Shield, Zap, Clock, ArrowRight, PackageCheck, Car, Gem,
+  Search,
+  Eye,
 } from "lucide-react";
 
 type ShopCategory = "grocery" | "alcohol" | "pharmacy" | "fuel";
@@ -30,19 +32,28 @@ function effectivePrice(p: Product): number {
 }
 
 const DEFAULT_PRODUCTS: Product[] = [
-  { id: "p1",  name: "Fresh Milk 2L",          category: "grocery",  price: 28,    unit: "per 2L",      description: "Full cream fresh milk, locally sourced and chilled daily. Rich and creamy — perfect for the whole family.", inStock: true,  requiresAgeVerification: false, vendorName: "Checkers Windhoek",  imageUrl: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=800&h=600&fit=crop&auto=format&q=80" },
-  { id: "p2",  name: "Free Range Eggs",         category: "grocery",  price: 55,    salePrice: 45,       unit: "per dozen",   description: "Farm-fresh free range eggs from local Namibian farmers. Rich golden yolks, sourced ethically.", inStock: true,  requiresAgeVerification: false, vendorName: "Spar Windhoek",      imageUrl: "https://images.unsplash.com/photo-1518569656558-1f25e69d2fd4?w=800&h=600&fit=crop&auto=format&q=80" },
-  { id: "p3",  name: "Bread Loaf (White)",      category: "grocery",  price: 18,    unit: "per loaf",    description: "Freshly baked white bread, sliced and ready. Soft, fluffy and perfect for sandwiches or toast.", inStock: true,  requiresAgeVerification: false, vendorName: "Freshmart Windhoek", imageUrl: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&h=600&fit=crop&auto=format&q=80" },
-  { id: "p4",  name: "Cooking Oil 2L",          category: "grocery",  price: 65,    unit: "per 2L",      description: "Refined sunflower cooking oil, pure and light. Ideal for frying, baking and everyday cooking.", inStock: true,  requiresAgeVerification: false, vendorName: "Pick n Pay",         imageUrl: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&h=600&fit=crop&auto=format&q=80" },
-  { id: "p5",  name: "Windhoek Lager 6-pack",   category: "alcohol",  price: 130,   unit: "per 6-pack",  description: "Namibia's #1 lager — ice cold and locally brewed since 1920. Crisp, refreshing and iconic.", inStock: true,  requiresAgeVerification: true,  vendorName: "Checkers Liquor",    imageUrl: "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=800&h=600&fit=crop&auto=format&q=80" },
-  { id: "p6",  name: "Hunters Dry 4-pack",      category: "alcohol",  price: 95,    unit: "per 4-pack",  description: "Crisp dry apple cider — refreshingly light with a clean, smooth finish. Great for any occasion.", inStock: true,  requiresAgeVerification: true,  vendorName: "Checkers Liquor",    imageUrl: "https://images.unsplash.com/photo-1560526860-1f0e56046c85?w=800&h=600&fit=crop&auto=format&q=80" },
-  { id: "p7",  name: "Red Wine 750ml",           category: "alcohol",  price: 120,   salePrice: 99,       unit: "per bottle",  description: "South African Shiraz — smooth, full-bodied with hints of dark fruit and spice. Pairs well with red meat.", inStock: true,  requiresAgeVerification: true,  vendorName: "Tops Windhoek",      imageUrl: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p1",  name: "Nammilk Full Cream Milk", category: "grocery",  price: 41.99, unit: "per 2L",      description: "Fresh full cream milk from Namibia Dairies, a familiar everyday choice for Namibian homes.", inStock: true, requiresAgeVerification: false, vendorName: "Food Lover's Windhoek", imageUrl: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p2",  name: "Waldschmidt Medium Eggs", category: "grocery",  price: 64.99, salePrice: 59.99, unit: "18 pack", description: "Quality eggs for breakfast, baking and everyday family meals.", inStock: true, requiresAgeVerification: false, vendorName: "Local supplier", imageUrl: "/images/waldschmidt-medium-eggs.png" },
+  { id: "p3",  name: "Fresh Brown Bread", category: "grocery", price: 18.99, unit: "per loaf", description: "Freshly baked brown bread, soft, sliced and ready for the family table.", inStock: true, requiresAgeVerification: false, vendorName: "Shoprite Bakery", imageUrl: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p4",  name: "Nola Sunflower Oil", category: "grocery", price: 68.99, unit: "per 2L", description: "Pure sunflower oil for frying, baking and everyday Namibian cooking.", inStock: true, requiresAgeVerification: false, vendorName: "Shoprite Namibia", imageUrl: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p5",  name: "Windhoek Draught Cans", category: "alcohol", price: 79.99, unit: "6 x 500ml", description: "Premium Namibian beer with a crisp, refreshing taste. Serve chilled.", inStock: true, requiresAgeVerification: true, vendorName: "Shoprite Liquor", imageUrl: "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p6",  name: "Hunters Dry Cider", category: "alcohol", price: 94.99, unit: "4 pack", description: "A crisp apple cider for relaxed occasions. Best served ice cold.", inStock: true, requiresAgeVerification: true, vendorName: "Checkers Liquor", imageUrl: "https://images.unsplash.com/photo-1560526860-1f0e56046c85?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p7",  name: "Tassenberg Dry Red Wine", category: "alcohol", price: 92.99, salePrice: 87.99, unit: "per 2L", description: "A familiar Southern African dry red wine for the table and braai.", inStock: true, requiresAgeVerification: true, vendorName: "Shoprite Liquor", imageUrl: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&h=600&fit=crop&auto=format&q=80" },
   { id: "p8",  name: "Panado 500mg (24s)",       category: "pharmacy", price: 38,    unit: "per box",     description: "Trusted pain and fever relief. Each box contains 24 tablets of Paracetamol 500mg. Safe for adults and children.", inStock: true,  requiresAgeVerification: false, vendorName: "Dis-Chem Windhoek",  imageUrl: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&h=600&fit=crop&auto=format&q=80" },
   { id: "p9",  name: "Allergex (30 tabs)",       category: "pharmacy", price: 62,    unit: "per box",     description: "Antihistamine for seasonal allergy and hay fever relief. Non-drowsy formula, fast-acting. 30 tablets per box.", inStock: true,  requiresAgeVerification: false, vendorName: "Dis-Chem Windhoek",  imageUrl: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800&h=600&fit=crop&auto=format&q=80" },
-  { id: "p10", name: "Vitamin C 1000mg",         category: "pharmacy", price: 85,    unit: "per 30 tabs", description: "Immune system support with 1000mg effervescent Vitamin C. Dissolves in water, great orange flavour.", inStock: true,  requiresAgeVerification: false, vendorName: "Nampharm",           imageUrl: "https://images.unsplash.com/photo-1550439062-609e1531270e?w=800&h=600&fit=crop&auto=format&q=80" },
-  { id: "p11", name: "Unleaded 95 Petrol",       category: "fuel",     price: 23.50, unit: "per litre",   description: "Unleaded 95 octane petrol delivered directly to your vehicle or canister at your location. Minimum 10L order.", inStock: true,  requiresAgeVerification: false, vendorName: "Engen Windhoek",     imageUrl: "https://images.unsplash.com/photo-1545575492-cc03df2eecf5?w=800&h=600&fit=crop&auto=format&q=80" },
-  { id: "p12", name: "Diesel 50ppm",             category: "fuel",     price: 21.80, unit: "per litre",   description: "Low-sulphur 50ppm diesel suitable for all diesel engines. Clean combustion, better fuel economy. Minimum 10L order.", inStock: true,  requiresAgeVerification: false, vendorName: "Engen Windhoek",     imageUrl: "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p10", name: "Vitamin C 1000mg", category: "pharmacy", price: 85, unit: "per 20 tabs", description: "Orange-flavoured effervescent Vitamin C 1000mg tablets. Dissolves easily in water.", inStock: true, requiresAgeVerification: false, vendorName: "Local supplier", imageUrl: "/images/vitamin-c-1000mg.png" },
+  { id: "p11", name: "Unleaded 95 Petrol", category: "fuel", price: 23.50, unit: "per litre", description: "Unleaded 95 octane petrol delivered directly to your vehicle or approved canister. Minimum 10L order.", inStock: true, requiresAgeVerification: false, vendorName: "Local supplier", imageUrl: "/images/unleaded-95-petrol.png" },
+  { id: "p12", name: "Diesel 50ppm", category: "fuel", price: 21.80, unit: "per litre", description: "Low-sulphur 50ppm diesel delivered safely in an approved container. Minimum 10L order.", inStock: true, requiresAgeVerification: false, vendorName: "Local supplier", imageUrl: "/images/diesel-50ppm.png" },
+  { id: "p13", name: "Top Score Super Maize Meal", category: "grocery", price: 109.99, salePrice: 99.99, unit: "per 10kg", description: "Proudly Namibian fortified super maize meal for smooth, wholesome porridge.", inStock: true, requiresAgeVerification: false, vendorName: "Woermann Brock", imageUrl: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p14", name: "Nice Rice White Rice", category: "grocery", price: 54.99, unit: "per 2kg", description: "Clean, fluffy white rice and a dependable pantry staple for family meals.", inStock: true, requiresAgeVerification: false, vendorName: "Shoprite Namibia", imageUrl: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p15", name: "Marathon White Sugar", category: "grocery", price: 49.99, unit: "per 2.5kg", description: "White granulated sugar for tea, baking and everyday cooking.", inStock: true, requiresAgeVerification: false, vendorName: "Local supplier", imageUrl: "/images/marathon-white-sugar.png" },
+  { id: "p16", name: "Bokomo Vetkoek Flour", category: "grocery", price: 84.99, unit: "per 5kg", description: "Locally milled wheat flour made for vetkoek, bread and home baking.", inStock: true, requiresAgeVerification: false, vendorName: "Woermann Brock", imageUrl: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p17", name: "Namibian Potatoes", category: "grocery", price: 39.99, unit: "per 2kg", description: "Fresh everyday potatoes for roasting, chips, stews and family meals.", inStock: true, requiresAgeVerification: false, vendorName: "Food Lover's Market", imageUrl: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=800&h=600&fit=crop&auto=format&q=80" },
+  { id: "p18", name: "Fresh Carrots", category: "grocery", price: 22.99, unit: "per 1kg", description: "Crisp fresh carrots selected for salads, stews and lunch boxes.", inStock: true, requiresAgeVerification: false, vendorName: "Fresh Produce Market", imageUrl: "https://images.unsplash.com/photo-1447175008436-054170c2e979?w=800&h=600&fit=crop&auto=format&q=80" },
 ];
+
+const SHOP_SPOTLIGHT = DEFAULT_PRODUCTS.find(p => p.id === "p13")!;
+const SHOP_PICKS = DEFAULT_PRODUCTS.filter(p => ["p1", "p14", "p17"].includes(p.id));
 
 // ── Hero category images — update these URLs anytime to change what shows on the shop hero ──
 const CATEGORY_HERO_IMAGES: Record<string, string> = {
@@ -53,9 +64,9 @@ const CATEGORY_HERO_IMAGES: Record<string, string> = {
 };
 
 const CATEGORIES = [
-  { value: "all" as const, label: "All Products", Icon: ShoppingBag, color: "#0073FF", bg: "from-[#0073FF] to-[#003EA6]" },
-  { value: "grocery" as const, label: "Groceries", Icon: Leaf, color: "#10B981", bg: "from-[#059669] to-[#10B981]", desc: "Fresh daily essentials" },
-  { value: "alcohol" as const, label: "Alcohol 18+", Icon: GlassWater, color: "#F59E0B", bg: "from-[#D97706] to-[#F59E0B]", desc: "Cold beverages & spirits" },
+  { value: "all" as const, label: "All Departments", Icon: ShoppingBag, color: "#0867B2", bg: "from-[#0867B2] to-[#102947]" },
+  { value: "grocery" as const, label: "Food & Groceries", Icon: Leaf, color: "#199264", bg: "from-[#087A50] to-[#20A878]", desc: "Fresh produce and pantry favourites" },
+  { value: "alcohol" as const, label: "Beer, Wine & Cider 18+", Icon: GlassWater, color: "#E39A10", bg: "from-[#C47706] to-[#EAAE23]", desc: "Cold drinks for adults" },
   { value: "pharmacy" as const, label: "Pharmacy", Icon: Pill, color: "#38BDF8", bg: "from-[#0284C7] to-[#38BDF8]", desc: "Medicine & health essentials" },
   { value: "fuel" as const, label: "Fuel", Icon: Fuel, color: "#F97316", bg: "from-[#EA580C] to-[#F97316]", desc: "Fuel delivered to you" },
 ];
@@ -89,6 +100,7 @@ export default function ShopClient() {
   const [toast, setToast] = useState<{ name: string; category: ShopCategory; price: number } | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [search, setSearch] = useState("");
   const productsRef = useRef<HTMLDivElement>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -105,7 +117,8 @@ export default function ShopClient() {
       });
   }, [active]);
 
-  const displayed = active === "all" ? products : products.filter(p => p.category === active);
+  const displayed = (active === "all" ? products : products.filter(p => p.category === active))
+    .filter(p => `${p.name} ${p.vendorName} ${p.description}`.toLowerCase().includes(search.toLowerCase()));
 
   function scrollToProducts() {
     const el = productsRef.current;
@@ -163,51 +176,40 @@ export default function ShopClient() {
   const activeCat = CATEGORIES.find(c => c.value === active);
 
   return (
-    <div className="min-h-screen bg-[#090E1A]">
+    <div className="grocery-store min-h-screen bg-white">
 
       {/* ── Hero ─────────────────────────────────────────── */}
-      <div className="relative pt-16 overflow-hidden">
+      <div className="grocery-hero relative overflow-hidden">
         {/* Ambient blobs */}
-        <div className="absolute top-24 left-[-80px] w-96 h-96 bg-[#0073FF]/12 rounded-full blur-3xl animate-blob pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#0073FF]/8 rounded-full blur-3xl animate-blob pointer-events-none" style={{ animationDelay: "3s" }} />
+        <div className="grocery-pattern" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-12">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
           <div className="flex flex-col lg:flex-row lg:items-center gap-10">
 
             {/* Left: copy */}
-            <div className="flex-1 lg:max-w-xl">
-              <div className="inline-flex items-center gap-2 bg-[#0073FF]/10 border border-[#0073FF]/20 text-[#4DA6FF] text-xs font-bold px-4 py-1.5 rounded-full mb-6">
+            <div className="flex-1 lg:max-w-xl grocery-hero-copy">
+              <div className="inline-flex items-center gap-2 bg-white/90 text-[#0867b2] text-xs font-black px-4 py-2 rounded-lg mb-5">
                 <Zap className="w-3 h-3" strokeWidth={2.5} />
-                Windhoek&apos;s Fastest Delivery — Available Now
+                Fresh, fast and delivered with care
               </div>
 
-              <h1 className="text-white font-black text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.05] mb-5">
-                Everything<br />
-                <span className="gradient-text">Delivered</span>{" "}
-                to Your&nbsp;Door
+              <h1 className="text-white font-black text-4xl sm:text-5xl lg:text-[3.8rem] leading-[1.04] mb-5">
+                We bring the store<br />
+                <span>to your door.</span>
               </h1>
 
-              <p className="text-gray-400 text-lg leading-relaxed mb-8">
-                Groceries, medicines, cold drinks and fuel — ordered in seconds, delivered anywhere in Windhoek in 30–60 minutes.
+              <p className="grocery-hero-description text-lg leading-relaxed mb-8">
+                Groceries, medicines, beverages and fuel. Order everything you need from one simple store.
               </p>
 
               <div className="flex flex-wrap gap-3">
-                {[
-                  { Icon: Clock, label: "30–60 Min Delivery", color: "text-[#4DA6FF]" },
-                  { Icon: CheckCircle2, label: "Quality Guaranteed", color: "text-green-400" },
-                  { Icon: Shield, label: "Secure Payment", color: "text-amber-400" },
-                  { Icon: Star, label: "Top Rated Service", color: "text-yellow-400" },
-                ].map(({ Icon, label, color }) => (
-                  <span key={label} className="flex items-center gap-2 bg-white/5 border border-white/8 text-white text-sm font-semibold px-4 py-2 rounded-full">
-                    <Icon className={`w-4 h-4 ${color}`} strokeWidth={2} />
-                    {label}
-                  </span>
-                ))}
+                <button onClick={scrollToProducts} className="grocery-shop-btn">Shop now <ArrowRight /></button>
+                <span className="grocery-delivery-note"><Clock /> Delivery in 30 to 60 min</span>
               </div>
             </div>
 
             {/* Right: full-bleed photo category cards */}
-            <div className="lg:w-[420px] grid grid-cols-2 gap-3 shrink-0">
+            <div className="hidden">
               {CATEGORIES.filter(c => c.value !== "all").map(({ value, label, bg, desc }) => {
                 const heroImg = CATEGORY_HERO_IMAGES[value];
                 return (
@@ -215,8 +217,8 @@ export default function ShopClient() {
                     key={value}
                     type="button"
                     onClick={() => handleCatClick(value)}
-                    className="relative rounded-2xl overflow-hidden group cursor-pointer active:scale-[0.97] transition-transform duration-300 text-left"
-                    style={{ height: "190px" }}
+                    className="relative rounded-xl overflow-hidden group cursor-pointer active:scale-[0.97] transition-transform duration-300 text-left"
+                    style={{ height: "175px" }}
                   >
                     {/* Full-bleed photo */}
                     {heroImg && (
@@ -253,7 +255,7 @@ export default function ShopClient() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-between">
             <p className="text-white font-bold text-sm shrink-0 text-center sm:text-left">
-              One platform — every service you need in Namibia
+              One platform for every service you need in Namibia
             </p>
             <div className="flex flex-wrap gap-2 justify-center sm:justify-end">
               {[
@@ -275,6 +277,97 @@ export default function ShopClient() {
 
       {/* ── Shopping area (light bg) ──────────────────────── */}
       <div className="bg-gray-50">
+
+        <section className="shop-old-showcase relative overflow-hidden" style={{ background: "linear-gradient(135deg,#f7faf8 0%,#fffaf0 52%,#f5f9f7 100%)", padding: "88px 0 96px" }}>
+          {/* Soft decorative blobs, echoing the fresh-produce accents in the reference design */}
+          <div aria-hidden className="pointer-events-none absolute rounded-full" style={{ width: 220, height: 220, left: -110, top: 100, background: "#d7edcf", filter: "blur(1px)", opacity: 0.7 }} />
+          <div aria-hidden className="pointer-events-none absolute rounded-full" style={{ width: 180, height: 180, right: -85, bottom: 70, background: "#ffd5bd", filter: "blur(1px)", opacity: 0.7 }} />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Heading */}
+            <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-24">
+              <span className="block text-[#199264] text-[11px] font-black uppercase tracking-[0.16em] mb-3">Fresh choices, everyday</span>
+              <h2 className="text-[#102947] font-black tracking-tight" style={{ fontSize: "clamp(34px,4.5vw,56px)", lineHeight: 1.06, letterSpacing: "-0.04em" }}>
+                Everyday essentials,<br />made easy.
+              </h2>
+              <p className="text-[#697b87] text-sm leading-relaxed mt-4 max-w-md mx-auto">Fresh products and trusted favourites selected for your home, delivered with care.</p>
+              <button
+                type="button"
+                onClick={() => handleCatClick("grocery")}
+                className="inline-flex items-center gap-2 mt-6 bg-[#102947] hover:bg-[#0867b2] text-white text-xs font-bold px-5 py-3 rounded-xl shadow-lg shadow-[#10294726] transition-colors"
+              >
+                Shop all groceries <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} />
+              </button>
+            </div>
+
+            {/* Product cards — circular photo overlapping a rounded card, one elevated & highlighted like the reference */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6 max-w-4xl mx-auto items-end">
+              {DEFAULT_PRODUCTS.filter(p => ["p13", "p1", "p14", "p17"].includes(p.id)).map((p, index) => {
+                const selected = index === 1;
+                const onSale = isOnSale(p);
+                return (
+                  <article
+                    key={p.id}
+                    className={`relative rounded-2xl text-center px-4 pb-5 transition-all duration-300 flex flex-col ${
+                      selected
+                        ? "shadow-[0_22px_44px_rgba(224,153,21,0.28)] -translate-y-4 hover:-translate-y-6"
+                        : "bg-white shadow-[0_18px_40px_rgba(36,63,54,0.12)] hover:-translate-y-1"
+                    }`}
+                    style={{ paddingTop: 78, minHeight: 250, background: selected ? "#f7ad20" : "#fff" }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setSelectedProduct(p)}
+                      aria-label={`View details for ${p.name}`}
+                      className="absolute left-1/2 rounded-full overflow-hidden border-white"
+                      style={{ top: -55, transform: "translateX(-50%)", width: 118, height: 118, borderWidth: 8, boxShadow: "0 12px 24px rgba(27,54,45,0.18)", background: selected ? "#fff8dd" : "#edf3ef" }}
+                    >
+                      <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
+                      {onSale && (
+                        <span className="absolute top-1 left-1 bg-red-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full">
+                          -N$ {(p.price - p.salePrice!).toFixed(0)}
+                        </span>
+                      )}
+                    </button>
+
+                    <div className="flex-1 flex flex-col">
+                      <p className={`text-[9px] font-extrabold uppercase tracking-wide ${selected ? "text-[#654914]" : "text-[#809087]"}`}>Rider Africa selection</p>
+                      <h3 className={`text-[13px] sm:text-[15px] font-black leading-snug mt-1 mb-1 ${selected ? "text-[#3a2a08]" : "text-[#183027]"}`} style={{ minHeight: 36 }}>
+                        {p.name}
+                      </h3>
+                      <span className={`text-[10px] ${selected ? "text-[#654914]" : "text-[#8997a1]"}`}>{p.unit}</span>
+
+                      <div className={`flex items-center justify-between mt-auto pt-3 ${selected ? "border-t border-[#d99617]" : "border-t border-[#e5ece7]"}`} style={{ marginTop: 14 }}>
+                        <b className={`text-base sm:text-lg font-black ${selected ? "text-[#3a2a08]" : "text-[#183027]"}`}>N$ {effectivePrice(p).toFixed(2)}</b>
+                        <button
+                          type="button"
+                          onClick={() => addToCart(p)}
+                          aria-label={`Add ${p.name}`}
+                          className={`w-8 h-8 rounded-lg grid place-items-center transition-transform hover:scale-110 shrink-0 ${selected ? "bg-white text-[#f7ad20]" : "bg-[#f7ad20] text-[#102947]"}`}
+                        >
+                          <Plus className="w-4 h-4" strokeWidth={2.5} />
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="shop-discover">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="shop-discover-head"><div><span>Picked for your basket</span><h2>Fresh finds for everyday life.</h2><p>Good food, useful essentials and simple shopping in one place.</p></div><button type="button" onClick={() => handleCatClick("grocery")}>Explore all groceries <ArrowRight /></button></div>
+            <div className="shop-bento">
+              <article className="shop-spotlight">
+                <div className="shop-spotlight-copy"><span>Pantry favourite</span><h3>{SHOP_SPOTLIGHT.name}</h3><p>{SHOP_SPOTLIGHT.description}</p><div><b>N$ {effectivePrice(SHOP_SPOTLIGHT).toFixed(2)}</b><small>{SHOP_SPOTLIGHT.unit}</small></div><button type="button" onClick={() => addToCart(SHOP_SPOTLIGHT)}><ShoppingCart /> Add to basket</button></div>
+                <button type="button" className="shop-spotlight-image" onClick={() => setSelectedProduct(SHOP_SPOTLIGHT)}><img src={SHOP_SPOTLIGHT.imageUrl} alt={SHOP_SPOTLIGHT.name} />{isOnSale(SHOP_SPOTLIGHT) && <span>Save N$ {(SHOP_SPOTLIGHT.price - SHOP_SPOTLIGHT.salePrice!).toFixed(0)}</span>}</button>
+              </article>
+              <div className="shop-quick-picks">{SHOP_PICKS.map(p => <article key={p.id}><button type="button" onClick={() => setSelectedProduct(p)}><img src={p.imageUrl} alt={p.name} /></button><div><span>Everyday essential</span><h3>{p.name}</h3><small>{p.unit}</small><div><b>N$ {effectivePrice(p).toFixed(2)}</b><button type="button" onClick={() => addToCart(p)} aria-label={`Add ${p.name}`}><Plus /></button></div></div></article>)}</div>
+            </div>
+          </div>
+        </section>
 
         {/* Sticky category + cart bar */}
         <div className="sticky top-16 z-30 bg-white border-b border-gray-100 shadow-sm">
@@ -316,7 +409,7 @@ export default function ShopClient() {
                 {count > 0 ? (
                   <>
                     <span className="font-black">{count} item{count !== 1 ? "s" : ""}</span>
-                    <span className="hidden sm:inline text-blue-200">·</span>
+                    <span className="hidden sm:inline text-blue-200">|</span>
                     <span className="hidden sm:inline font-black">N$ {total.toFixed(2)}</span>
                     <ChevronRight className="w-4 h-4" strokeWidth={2.5} />
                   </>
@@ -329,12 +422,17 @@ export default function ShopClient() {
         </div>
 
         {/* Product grid */}
-        <div ref={productsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-32">
-          <div className="flex items-center justify-between mb-6">
+        <div ref={productsRef} className="grocery-catalog max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-32">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
             <div>
               <h2 className="text-gray-900 font-black text-2xl">{activeCat?.label ?? "All Products"}</h2>
-              <p className="text-gray-500 text-sm mt-0.5">{displayed.length} items · Delivered in 30–60 min</p>
+              <p className="text-gray-500 text-sm mt-0.5">{displayed.length} items | Delivered in 30 to 60 min</p>
             </div>
+            <label className="grocery-search">
+              <Search />
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search products, stores or categories…" />
+              {search && <button type="button" onClick={() => setSearch("")} aria-label="Clear search"><X /></button>}
+            </label>
             {count > 0 && (
               <button type="button" onClick={() => setCartOpen(true)}
                 className="flex items-center gap-2 bg-[#0073FF]/10 text-[#0073FF] font-bold text-sm px-4 py-2 rounded-xl hover:bg-[#0073FF]/15 transition-colors">
@@ -343,7 +441,7 @@ export default function ShopClient() {
             )}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5">
+          <div className="grocery-product-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5">
             {displayed.map(p => {
               const CatIcon = CAT_ICON[p.category] ?? ShoppingBag;
               const catBg = CAT_BG[p.category] ?? "from-[#0073FF] to-[#003EA6]";
@@ -378,12 +476,10 @@ export default function ShopClient() {
                       </>
                     )}
 
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors z-20 flex items-end justify-center pb-3">
-                      <span className="text-white text-[11px] font-bold bg-black/60 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                        View details →
-                      </span>
-                    </div>
+                    {/* Detail action without an image overlay */}
+                    <span className="product-view-cta absolute left-1/2 bottom-4 z-20 opacity-0 group-hover:opacity-100">
+                      <Eye /> View details <ArrowRight />
+                    </span>
 
                     {justAdded && (
                       <div className="absolute inset-0 bg-green-500/30 flex items-center justify-center z-30">
@@ -414,7 +510,7 @@ export default function ShopClient() {
                   <div className="p-4 flex flex-col flex-1">
                     <div className="flex-1">
                       <p className="text-gray-900 font-black text-base leading-snug mb-0.5">{p.name}</p>
-                      <p className="text-gray-400 text-[11px] mb-2 truncate">{p.vendorName}</p>
+                      <p className="text-gray-400 text-[11px] mb-2 capitalize">{p.category === "grocery" ? "Food & groceries" : p.category}</p>
                       <p className="text-gray-500 text-xs leading-relaxed line-clamp-2 mb-3">{p.description}</p>
                     </div>
 
@@ -469,6 +565,7 @@ export default function ShopClient() {
               );
             })}
           </div>
+          {displayed.length === 0 && <div className="grocery-empty"><Search /><h3>No products found</h3><p>Try another search or select a different category.</p><button onClick={() => { setSearch(""); setActive("all"); }}>View all products</button></div>}
         </div>
 
         {/* Footer CTA strip */}
@@ -476,13 +573,13 @@ export default function ShopClient() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="text-center mb-8">
               <h3 className="text-white font-black text-2xl mb-2">Need more from Rider Africa?</h3>
-              <p className="text-gray-500 text-sm max-w-md mx-auto">We ship packages, transport passengers, and accept pawned valuables — all on one platform, all across Namibia.</p>
+              <p className="text-gray-500 text-sm max-w-md mx-auto">We ship packages, transport passengers and accept pawned valuables, all on one platform across Namibia.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
               {[
                 { label: "Parcel Delivery", desc: "Same-day local & international shipping", href: "/services/local-parcel", Icon: PackageCheck, color: "#0073FF" },
                 { label: "Passenger Transport", desc: "Safe, verified rides across Windhoek", href: "/services/transport", Icon: Car, color: "#10B981" },
-                { label: "Pawn Services", desc: "Valuables accepted — fast cash, no hassle", href: "/pawn", Icon: Gem, color: "#F59E0B" },
+                { label: "Pawn Services", desc: "Valuables accepted, fast cash with no hassle", href: "/pawn", Icon: Gem, color: "#F59E0B" },
               ].map(({ label, desc, href, Icon, color }) => (
                 <Link key={href} href={href}
                   className="flex flex-col items-center text-center p-6 bg-white/5 hover:bg-white/8 border border-white/8 hover:border-white/15 rounded-2xl transition-all group">
@@ -558,7 +655,7 @@ export default function ShopClient() {
                 </div>
 
                 <h2 className="text-gray-900 font-black text-2xl leading-tight mb-1">{selectedProduct.name}</h2>
-                <p className="text-gray-400 text-sm mb-4">From {selectedProduct.vendorName}</p>
+                <p className="text-gray-400 text-sm mb-4 capitalize">{selectedProduct.category === "grocery" ? "Food & groceries" : selectedProduct.category}</p>
 
                 <div className="flex items-baseline gap-2 mb-5 flex-wrap">
                   <span className={`font-black text-3xl ${selOnSale ? "text-red-500" : "text-[#0073FF]"}`}>N$ {selPrice.toFixed(2)}</span>
@@ -598,7 +695,7 @@ export default function ShopClient() {
                     className="w-full flex items-center justify-center gap-2 bg-[#0073FF] hover:bg-[#0055CC] active:bg-[#003EA6] disabled:opacity-40 text-white font-black py-4 rounded-2xl text-sm transition-colors"
                   >
                     <ShoppingCart className="w-5 h-5" strokeWidth={2} />
-                    Add to Cart — N$ {selPrice.toFixed(2)} {selectedProduct.unit}
+                    Add to Cart | N$ {selPrice.toFixed(2)} {selectedProduct.unit}
                   </button>
                 )}
               </div>
@@ -707,11 +804,11 @@ export default function ShopClient() {
                 style={{ width: "100%", background: "#0073FF", color: "white", fontWeight: 900, fontSize: 16, padding: "14px 20px", borderRadius: 16, border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 16px rgba(0,115,255,0.35)" }}
               >
                 <ShoppingCart style={{ width: 20, height: 20 }} strokeWidth={2} />
-                Checkout — N$ {total.toFixed(2)}
+                Checkout | N$ {total.toFixed(2)}
                 <ChevronRight style={{ width: 20, height: 20 }} strokeWidth={2.5} />
               </button>
               <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 8 }}>
-                {count} item{count !== 1 ? "s" : ""} · Delivery fee added at checkout
+                {count} item{count !== 1 ? "s" : ""} | Delivery fee added at checkout
               </p>
             </div>
 
@@ -828,7 +925,7 @@ export default function ShopClient() {
                 {placing ? "Placing Order…" : `Pay N$ ${total.toFixed(2)}`}
                 {!placing && <ChevronRight className="w-4 h-4" strokeWidth={2.5} />}
               </button>
-              <p className="text-gray-400 text-xs text-center mt-2">Secure payment · DPO Group</p>
+              <p className="text-gray-400 text-xs text-center mt-2">Secure payment | DPO Group</p>
             </div>
           </div>
         </div>
@@ -847,7 +944,7 @@ export default function ShopClient() {
               <p className="text-gray-400 text-xs uppercase tracking-widest font-semibold mb-0.5">Reference</p>
               <p className="text-gray-900 font-mono font-black">{orderRef}</p>
             </div>
-            <p className="text-gray-400 text-xs mb-6">Estimated delivery: <strong className="text-gray-600">30–60 minutes</strong></p>
+            <p className="text-gray-400 text-xs mb-6">Estimated delivery: <strong className="text-gray-600">30 to 60 minutes</strong></p>
             <button type="button" onClick={() => { setOrderDone(false); setForm({ name: "", phone: "", email: "", address: "", notes: "" }); }}
               className="w-full bg-[#0073FF] hover:bg-[#0055CC] text-white font-bold py-3 rounded-xl text-sm transition-colors">
               Continue Shopping
@@ -869,11 +966,11 @@ export default function ShopClient() {
             <div className="flex flex-col gap-3">
               <button type="button" onClick={() => { setAgeVerified(true); setShowAge(false); setActive("alcohol"); }}
                 className="w-full bg-[#0073FF] hover:bg-[#0055CC] text-white font-bold py-3 rounded-xl text-sm transition-colors">
-                I am 18 or older — Continue
+                I am 18 or older | Continue
               </button>
               <button type="button" onClick={() => setShowAge(false)}
                 className="w-full border border-gray-200 text-gray-600 hover:bg-gray-50 py-3 rounded-xl text-sm transition-colors">
-                I am under 18 — Go Back
+                I am under 18 | Go Back
               </button>
             </div>
             <p className="text-gray-400 text-xs mt-4">By confirming you agree you are of legal drinking age in Namibia (18+).</p>

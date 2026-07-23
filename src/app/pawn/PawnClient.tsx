@@ -328,7 +328,7 @@ export default function PawnClient() {
   // ── Success screen ────────────────────────────────────────────────────────
   if (success) {
     return (
-      <div className="bg-[#090E1A] py-20 px-4">
+      <div className="pawn-flow bg-[#090E1A] py-20 px-4">
         <div className="max-w-lg mx-auto bg-[#0D1526] rounded-2xl border border-white/8 p-10 text-center">
           <div className="w-20 h-20 bg-green-500/15 border-2 border-green-500/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-10 h-10 text-green-400" strokeWidth={1.75} />
@@ -361,7 +361,7 @@ export default function PawnClient() {
 
   // ── Tab + step navigation ────────────────────────────────────────────────
   return (
-    <div className="bg-[#090E1A] py-12 px-4">
+    <div className="pawn-flow bg-[#090E1A] py-12 px-4">
       <div className="max-w-2xl mx-auto">
 
         {/* Tab selector */}

@@ -1,116 +1,33 @@
 import type { Metadata } from "next";
-import AnimateOnScroll from "@/components/AnimateOnScroll";
-import PageHero from "@/components/PageHero";
+import Image from "next/image";
 import Link from "next/link";
-import { Flag, ShieldCheck, MapPin, Zap } from "lucide-react";
+import PageHero from "@/components/PageHero";
+import { ArrowRight, Check, Flag, HeartHandshake, Lightbulb, MapPin, ShieldCheck, Sparkles, Target, Users, Zap } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "About Us",
-  description: "Learn about Rider Africa — Namibia's on-demand delivery and transport platform.",
-};
+export const metadata: Metadata = { title: "About Us", description: "The story, mission and values behind Rider Africa." };
 
-const pillars = [
-  { Icon: Flag, label: "Namibian-Owned" },
-  { Icon: ShieldCheck, label: "Verified Drivers" },
-  { Icon: MapPin, label: "Real-Time Tracking" },
-  { Icon: Zap, label: "Fast & Reliable" },
+const values = [
+  { icon: ShieldCheck, title: "Trust first", text: "Safe services, verified drivers and responsible handling in every interaction." },
+  { icon: HeartHandshake, title: "People matter", text: "Technology should create opportunity and make everyday life genuinely easier." },
+  { icon: Lightbulb, title: "Built to improve", text: "We listen, learn and keep adapting Rider Africa to local needs." },
+  { icon: MapPin, title: "Rooted in Namibia", text: "Our decisions begin with the communities, distances and realities we know." },
 ];
 
 export default function AboutPage() {
-  return (
-    <div>
-      <PageHero
-        tagline="Our Story"
-        title="About"
-        titleHighlight="Rider Africa"
-        subtitle="Born in Namibia. Built for Africa. Powered by community."
-        imageSrc="/images/about-hero.jpg"
-        imageAlt="Rider Africa team Namibia"
-        imagePosition="center 30%"
-        gradient="from-[#001A6E] via-[#0044B3] to-[#0073FF]"
-      />
+  return <div className="about-page">
+    <PageHero tagline="Our story" title="Made in Namibia." titleHighlight="Built to move Africa." subtitle="Rider Africa connects people, places and possibilities through delivery, transport and practical everyday services." imageSrc="/images/about-hero.jpg" imageAlt="Rider Africa in Namibia" imagePosition="center 30%" />
 
-      {/* Who we are */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-16 items-center">
-          <AnimateOnScroll direction="left">
-            <span className="text-[#0073FF] font-semibold text-sm uppercase tracking-widest">Who We Are</span>
-            <h2 className="text-4xl font-black text-gray-900 mt-3 mb-6">
-              Connecting Namibia, One Delivery at a Time
-            </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Rider Africa is a Namibian-owned, technology-driven on-demand platform that connects customers
-              with trusted drivers for package delivery, passenger transport, grocery delivery, and more.
-            </p>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              We understand the unique landscape of Namibia — vast distances, diverse communities, and the
-              need for a platform that truly understands the local context. That is why Rider Africa was
-              designed specifically for Namibians, by Namibians.
-            </p>
-            <p className="text-gray-600 leading-relaxed">
-              Our platform empowers local drivers with income opportunities while giving customers a fast,
-              safe, and affordable way to move goods and people across the country.
-            </p>
-          </AnimateOnScroll>
+    <section className="about-story"><div className="ra-shell about-story-grid">
+      <div className="about-story-images"><div><Image src="/images/gallery-3.jpg" alt="Rider Africa at work" fill sizes="(max-width:800px) 100vw,45vw" /></div><div><Image src="/images/gallery-6.jpg" alt="Rider Africa community" fill sizes="240px" /></div><span><b>Namibian</b> owned and operated</span></div>
+      <div><p className="ra-kicker">Who we are</p><h2>A local idea with a bigger purpose.</h2><p>Rider Africa is a technology-driven platform created to make moving people and goods simpler across Namibia. We connect customers with trusted drivers for passenger transport, parcel delivery, groceries and specialised logistics.</p><p>We understand long distances, growing cities and communities that need dependable access. That local understanding shapes every service we build.</p><ul>{["Designed around real Namibian needs","Opportunities for local driver-partners","Clear, convenient service for every customer"].map(x=><li key={x}><Check />{x}</li>)}</ul><Link href="/services" className="ra-btn-primary">Explore our services <ArrowRight /></Link></div>
+    </div></section>
 
-          <AnimateOnScroll direction="right" delay={0.2}>
-            <div className="grid grid-cols-2 gap-4">
-              {pillars.map((item) => (
-                <div key={item.label} className="bg-[#F4F7FF] border border-[#0073FF]/10 rounded-2xl p-6 flex flex-col items-center text-center service-card">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#0073FF] to-[#003EA6] rounded-xl flex items-center justify-center mb-3 shadow-[0_6px_20px_rgba(0,115,255,0.25)]">
-                    <item.Icon className="w-6 h-6 text-white" strokeWidth={1.75} />
-                  </div>
-                  <p className="text-gray-900 font-semibold text-sm">{item.label}</p>
-                </div>
-              ))}
-            </div>
-          </AnimateOnScroll>
-        </div>
-      </section>
+    <section className="about-values"><div className="ra-shell"><div className="about-section-title"><p className="ra-kicker">What guides us</p><h2>The values behind every journey.</h2></div><div className="about-values-grid">{values.map(({icon:Icon,title,text},i)=><article key={title}><span>0{i+1}</span><div><Icon /></div><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
-      {/* Mission & Vision */}
-      <section className="py-20 bg-[#F4F7FF]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimateOnScroll className="text-center mb-14">
-            <h2 className="text-4xl font-black text-gray-900">Mission & Vision</h2>
-          </AnimateOnScroll>
-          <div className="grid md:grid-cols-2 gap-8">
-            <AnimateOnScroll direction="left">
-              <div className="bg-[#0073FF] rounded-3xl p-8 text-white">
-                <h3 className="text-2xl font-black mb-4">Our Mission</h3>
-                <p className="leading-relaxed text-blue-50">
-                  To make on-demand delivery and transport accessible, affordable, and reliable for
-                  every Namibian — from Windhoek to the most remote corners of the country.
-                </p>
-              </div>
-            </AnimateOnScroll>
-            <AnimateOnScroll direction="right" delay={0.15}>
-              <div className="bg-gray-900 rounded-3xl p-8 text-white">
-                <h3 className="text-2xl font-black mb-4">Our Vision</h3>
-                <p className="leading-relaxed text-gray-300">
-                  To become the leading on-demand logistics and mobility platform across Southern Africa —
-                  creating economic opportunity for drivers while simplifying daily life for every customer we serve.
-                </p>
-              </div>
-            </AnimateOnScroll>
-          </div>
-        </div>
-      </section>
+    <section className="about-purpose"><div className="ra-shell about-purpose-grid"><article><Target /><p>Our mission</p><h2>Make dependable mobility and delivery accessible to every Namibian.</h2><span>We combine local knowledge, helpful technology and committed people to create services customers can rely on.</span></article><article><Sparkles /><p>Our vision</p><h2>A connected Africa where distance no longer limits opportunity.</h2><span>We are building toward a leading Southern African platform that helps communities and local businesses move forward.</span></article></div></section>
 
-      {/* CTA */}
-      <section className="py-16 bg-[#0073FF] text-center px-4">
-        <AnimateOnScroll>
-          <h2 className="text-3xl font-black text-white mb-4">Ready to experience Rider Africa?</h2>
-          <div className="flex gap-4 justify-center flex-wrap">
-            <a href="/#download" className="bg-white text-[#0073FF] font-bold px-8 py-3 rounded-full hover:bg-[#F4F7FF] transition-colors">
-              Download the App
-            </a>
-            <Link href="/contact" className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white/10 transition-colors">
-              Get in Touch
-            </Link>
-          </div>
-        </AnimateOnScroll>
-      </section>
-    </div>
-  );
+    <section className="about-impact"><div className="ra-shell"><div><Flag /><p><b>Proudly Namibian</b><span>Created for our local context</span></p></div><div><Users /><p><b>Community powered</b><span>Drivers and customers grow together</span></p></div><div><Zap /><p><b>Always moving</b><span>Fast, practical and improving</span></p></div></div></section>
+
+    <section className="about-cta"><div className="ra-shell"><div><p className="ra-kicker">Move with us</p><h2>Be part of the Rider Africa journey.</h2></div><div><Link href="/#download" className="ra-btn-primary">Download the app <ArrowRight /></Link><Link href="/become-a-driver" className="ra-btn-light">Become a driver</Link></div></div></section>
+  </div>;
 }
